@@ -1,0 +1,13 @@
+{
+    "/js/app.js": "/js/app.js",
+    "/css/app.css": "/css/app.css",
+    "/css/vendors/simplebar.css": "/css/vendors/simplebar.css",
+    "/css/examples.css": "/css/examples.css",
+    "/css/style.css": "/css/style.css",
+    "/css/simplebar.css": "/css/simplebar.css",
+    "/css/coreui-chartjs.css": "/css/coreui-chartjs.css",
+    "/js/simplebar.min.js": "/js/simplebar.min.js",
+    "/js/coreui-chartjs.js": "/js/coreui-chartjs.js",
+    "/js/coreui.bundle.min.js": "/js/coreui.bundle.min.js",
+    "/js/coreui-utils.js": "/js/coreui-utils.js"
+}
