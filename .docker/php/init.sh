@@ -25,6 +25,8 @@ fi
 
 # 권한 설정
 echo "Setting permissions..."
+mkdir -p $TARGET_DIR/storage/logs $TARGET_DIR/bootstrap/cache
+chown -R www-data:www-data $TARGET_DIR/storage $TARGET_DIR/bootstrap/cache
 chmod -R 775 $TARGET_DIR/storage $TARGET_DIR/bootstrap/cache
 
 # PHP-FPM 설정 확인
