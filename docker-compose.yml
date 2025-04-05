@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
     container_name: laravel_app
     volumes:
-      - ./myProject/:/var/www/html  # 로컬 프로젝트 디렉토리와 컨테이너의 /var/www/html을 마운트
+      - ./:/var/www/html  # 로컬 프로젝트 디렉토리와 컨테이너의 /var/www/html을 마운트
     networks:
       - laravel_network
     depends_on:
@@ -18,7 +18,7 @@ services:
       - ./:/var/www/html  # 동일하게 로컬 프로젝트 디렉토리와 Nginx에서 마운트
       - ./.docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
     ports:
-      - "9090:80"
+      - "8080:80"
     networks:
       - laravel_network
     depends_on:
