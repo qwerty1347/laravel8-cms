@@ -30,4 +30,14 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'log' => [
+        'path' => env('LOG_STORAGE_PATH', storage_path('logs/'))
+    ],
+
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID', null),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET', null),
+        'redirect' => env('GOOGLE_REDIRECT'),
+    ],
+
 ];

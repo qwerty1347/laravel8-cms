@@ -1,10 +1,10 @@
 <x-guest-layout>
     <x-auth-card>
-        <x-slot name="logo">
+        {{-- <x-slot name="logo">
             <a href="/">
                 <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
             </a>
-        </x-slot>
+        </x-slot> --}}
 
         <!-- Session Status -->
         <x-auth-session-status class="mb-4" :status="session('status')" />
@@ -50,6 +50,21 @@
                 <x-button class="ml-3">
                     {{ __('Log in') }}
                 </x-button>
+            </div>
+
+            <div class="mt-10" style="display: flex; gap: 10px; justify-content: center; align-items: center; flex-wrap: wrap;">
+                <a href="login/google" target="_blank">
+                    <img src="{{ asset('assets/auth/web_light_sq_na@2x.png') }}" alt="">
+                </a>
+                <a href="login/google">
+                    <img src="{{ asset('assets/auth/web_light_sq_na@2x.png') }}" alt="">
+                </a>
+                <a href="login/google">
+                    <img src="{{ asset('assets/auth/web_light_sq_na@2x.png') }}" alt="">
+                </a>
+                <a href="login/google">
+                    <img src="{{ asset('assets/auth/web_light_sq_na@2x.png') }}" alt="">
+                </a>
             </div>
         </form>
     </x-auth-card>

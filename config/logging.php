@@ -1,5 +1,6 @@
 <?php
 
+use App\Logging\DailyLog;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
@@ -113,6 +114,15 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+
+        'adminlog' => [
+            'driver' => 'custom',
+            'via' => DailyLog::class,
+            'level' => 'debug',
+            'days' => 0,
+            'dir' => 'admin'
+        ],
+
     ],
 
 ];
