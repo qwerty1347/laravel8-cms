@@ -18,7 +18,7 @@ services:
       - ./:/var/www/html  # 동일하게 로컬 프로젝트 디렉토리와 Nginx에서 마운트
       - ./.docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
     ports:
-      - "8080:80"
+      - "9090:80"
     networks:
       - laravel_network
     depends_on:

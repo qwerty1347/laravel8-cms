@@ -8,7 +8,11 @@ RUN apt-get update && apt-get install -y \
     curl \
     python3 \
     python3-pip \
-    && docker-php-ext-install zip pdo pdo_mysql
+    zip \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    && docker-php-ext-install pdo pdo_mysql zip
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
