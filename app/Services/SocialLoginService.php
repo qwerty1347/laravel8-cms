@@ -58,7 +58,19 @@ class SocialLoginService
                 $user = $this->handleNotUser(SocialConstant::GOOGLE, $socialUser);
             }
             else if (isset($user) && $user->socialAccounts->isEmpty()) {
-                return view('user.link-account');
+
+                return view('user.link-account')->with([
+                    'socialData' => [
+                        'social' => SocialConstant::GOOGLE,
+                        'socialUser' => [
+                            'name' => $socialUser->getName(),
+                            'email' => $socialUser->getEmail(),
+                            'provider_id' => $socialUser->getId(),
+                            'access_token' => $socialUser->token,
+                            'refresh_token' => $socialUser->refreshToken
+                        ]
+                    ]
+                ]);
             }
             else {
                 $this->handleSocialAccountsUser($user, $user->socialAccounts);
@@ -76,7 +88,7 @@ class SocialLoginService
 
         } catch (Exception $e) {
             DB::rollBack();
-            $logMessage = $e->getMessage()." | FILE: ".$e->getFile()." | LINE: ".$e->getLine();
+            $logMessage = "#1 ".$e->getMessage()." | FILE: ".$e->getFile()." | LINE: ".$e->getLine();
             logMessage('adminlog', 'error', $logMessage);
 
             dd($e, $e->getMessage(), $e->getFile(), $e->getLine());
@@ -86,7 +98,7 @@ class SocialLoginService
     }
 
     /**
-     * 소셜 회원가입으로 최초 로그인 하는 경우를 처리하는 메소드 (User 없는 경우)
+     * 1) 소셜 회원가입으로 최초 로그인 하는 경우를 처리하는 메소드 (User 없는 경우)
      * - User 생성, SocialAccount 생성, OauthToken 생성
      *
      * @param   string   $socialProvider  [$socialProvider description]
@@ -128,6 +140,17 @@ class SocialLoginService
         return $user;
     }
 
+    /**
+     * 2) 통합 회원 승인
+     *
+     * @return  [type]  [return description]
+     */
+    public function handleLinkUserAccount()
+    {
+        dd(request()->session()->all(), request()->all());
+    }
+
+    // ?
     public function handleNotSocialAccountsUser()
     {
         try {
@@ -147,7 +170,7 @@ class SocialLoginService
     }
 
     /**
-     * 소셜 회원가입으로 로그인 하는 경우를 처리하는 메소드
+     * 3) 소셜 회원가입으로 로그인 하는 경우를 처리하는 메소드
      * - User 있고 SocialAccount 있는 경우
      * - 만료기간 검사 후 OauthToken 업데이트
      *
