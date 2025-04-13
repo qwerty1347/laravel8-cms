@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>통합회원 전환</title>
     <style>
         body {
@@ -58,18 +59,31 @@
             <button type="button" class="btn btn-light" id="cancel">취소</button>
         </div>
     </div>
-    <script>
-        $('#link').click(function (e) {
-            e.preventDefault();
-            const queryString = window.location.search + '&link=Y';
-            test = "{{ route('social.google.callback') }}" + queryString;
-            location.href = test;
-        });
-
-        $('#cancel').click(function (e) {
-            e.preventDefault();
-            location.href = "/login";
-        });
-    </script>
 </body>
+<script>
+    $('#link').click(function (e) {
+        e.preventDefault();
+        linkUserAccount();
+    });
+
+    $('#cancel').click(function (e) {
+        e.preventDefault();
+        location.href = "/login";
+    });
+
+    function linkUserAccount() {
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            type: "post",
+            url: "{{ route('social.link-account') }}",
+            data: {
+                socialData: @json($socialData),
+            },
+            dataType: "json",
+            success: function (response) {
+                // console.log(response);
+            }
+        });
+    }
+</script>
 </html>

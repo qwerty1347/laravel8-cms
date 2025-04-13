@@ -8,7 +8,7 @@
         @yield('contents')
         @include('layouts.admin.footer')
     </div>
+    </body>
     @include('layouts.admin.common.scripts')
     @yield('additional-scripts')
-    </body>
 </html>
