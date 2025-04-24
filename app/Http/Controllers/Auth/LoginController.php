@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Constants\HttpCodeConstant;
 use App\Http\Controllers\Controller;
 use Laravel\Socialite\Facades\Socialite;
 use App\Services\SocialLoginService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 
 class LoginController extends Controller
@@ -37,9 +39,18 @@ class LoginController extends Controller
        return $this->socialLoginService->handleGoogleCallback();
     }
 
-    public function handleLinkUserAccount()
+    /**
+     * 통합회원 전환을 처리하는 메소드
+     *
+     * @return  JsonResponse
+     */
+    public function handleLinkUserAccount(): JsonResponse
     {
-        return $this->socialLoginService->handleLinkUserAccount();
+        if (empty(request()->post('userId')) || empty(request()->post('socialData'))) {
+            response()->json(handleFailureResult(HttpCodeConstant::BAD_REQUEST, '소셜계정 정보가 존재하지 않습니다.'), HttpCodeConstant::BAD_REQUEST, [], JSON_UNESCAPED_UNICODE);
+        }
+
+        return $this->socialLoginService->handleLinkUserAccount(request()->post('userId'), request()->post('socialData'));
     }
 
 
