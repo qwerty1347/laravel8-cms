@@ -71,18 +71,29 @@
         location.href = "/login";
     });
 
+    /**
+     * 통합회원 전환을 요청하는 메소드
+     *
+     * @param   {Number}    User 테이블 PK
+     *
+     * @return  {Object}    소셜계정 정보
+     */
     function linkUserAccount() {
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             type: "post",
             url: "{{ route('social.link-account') }}",
             data: {
+                userId: @json($userId),
                 socialData: @json($socialData),
             },
             dataType: "json",
             success: function (response) {
-                // console.log(response);
-            }
+                location.href = "/login";
+            },
+            error: function (xhr, error, status) {
+                alert('관리자에게 문의해 주세요('+status+'): ' + xhr.responseText);
+            },
         });
     }
 </script>

@@ -14,6 +14,7 @@ use App\Constants\HttpCodeConstant;
 use App\Repositories\UserRepository;
 use App\Repositories\SocialAccountRepository;
 use App\Repositories\Auth\OauthTokenRepository;
+use Illuminate\Http\JsonResponse;
 
 class SocialLoginService
 {
@@ -60,6 +61,7 @@ class SocialLoginService
             else if (isset($user) && $user->socialAccounts->isEmpty()) {
 
                 return view('user.link-account')->with([
+                    'userId' => $user->id,
                     'socialData' => [
                         'social' => SocialConstant::GOOGLE,
                         'socialUser' => [
@@ -67,7 +69,8 @@ class SocialLoginService
                             'email' => $socialUser->getEmail(),
                             'provider_id' => $socialUser->getId(),
                             'access_token' => $socialUser->token,
-                            'refresh_token' => $socialUser->refreshToken
+                            'refresh_token' => $socialUser->refreshToken,
+                            'expires_in' => $socialUser->expiresIn
                         ]
                     ]
                 ]);
@@ -76,13 +79,10 @@ class SocialLoginService
                 $this->handleSocialAccountsUser($user, $user->socialAccounts);
             }
 
-            DB::commit();
-
-
             // dd("done", $user);
 
-
             Auth::login($user, true);
+            DB::commit();
 
             return redirect()->to('/'); // 로그인 후 리디렉션할 URL 설정
 
@@ -104,7 +104,7 @@ class SocialLoginService
      * @param   string   $socialProvider  [$socialProvider description]
      * @param   TwoUser  $socialUser      [$socialUser description]
      *
-     * @return  User                      [return description]
+     * @return  User
      */
     public function handleNotUser(string $socialProvider, TwoUser $socialUser): User
     {
@@ -141,13 +141,50 @@ class SocialLoginService
     }
 
     /**
-     * 2) 통합 회원 승인
+     * 2) 통합회원 전환을 처리하는 메소드
+     *  - SocialAccount 생성, OauthToken 생성
      *
-     * @return  [type]  [return description]
+     * @param   int     $userId      User 테이블 PK
+     * @param   array   $socialData  [social=>소셜 이름, socialUser=>[name=>소셜닉네임, email=>소셜이메일, provider_id=>소셜고유아이디, access_token=>소셜 액세스 토큰, refresh_token=>소셜 리프레쉬 토큰, expires_in=>소셜 만료]]
+     * @return  JsonResponse
      */
-    public function handleLinkUserAccount()
+    public function handleLinkUserAccount(int $userId, array $socialData): JsonResponse
     {
-        dd(request()->session()->all(), request()->all());
+        try {
+            DB::beginTransaction();
+            $socialAccount = $this->socialAccountRepository->firstOrCreate(
+                [
+                    'user_id'       => $userId,
+                    'provider_name' => $socialData['social'],
+                    'provider_id'   => $socialData['socialUser']['provider_id']
+                ]
+            );
+
+            $this->oauthTokenRepository->updateOrCreate(
+                [
+                    'user_id'           => $userId,
+                    'social_account_id' => $socialAccount->id
+                ],
+                [
+                    'access_token'  => $socialData['socialUser']['access_token'],
+                    'refresh_token' => $socialData['socialUser']['refresh_token'],
+                    'expires_at'    => now()->addSeconds($socialData['socialUser']['expires_in'])
+                ]
+            );
+
+            $user = $this->userRepository->getUserWithSocialAccountRow($socialData['socialUser']['email'], $socialData['socialUser']['provider_id']);
+
+            Auth::login($user, true);
+            DB::commit();
+
+            return response()->json(handleSuccessResult(), HttpCodeConstant::OK, [], JSON_UNESCAPED_UNICODE);
+        }
+        catch (Exception $e) {
+            DB::rollBack();
+            $logMessage = "#00 ".$e->getMessage()." | FILE: ".$e->getFile()." | LINE: ".$e->getLine();
+            logMessage('adminlog', 'error', $logMessage);
+            return response()->json(handleFailureResult(HttpCodeConstant::INTERVAL_SERVER_ERROR, $e->getMessage()), HttpCodeConstant::INTERVAL_SERVER_ERROR, [], JSON_UNESCAPED_UNICODE);
+        }
     }
 
     // ?

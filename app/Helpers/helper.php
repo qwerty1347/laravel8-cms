@@ -49,7 +49,7 @@ if (!function_exists("handleSuccessResult")) {
      *
      * @return  array
      */
-    function handleSuccessResult(array $data, int $code=HttpCodeConstant::OK): array
+    function handleSuccessResult(array $data=[], int $code=HttpCodeConstant::OK): array
     {
         return [
             "result" => true,
