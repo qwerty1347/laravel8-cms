@@ -16,7 +16,8 @@ if (!function_exists("logMessage")) {
      */
     function logMessage(string $channel, string $level, string $message, array $logData=[])
     {
-        Log::channel($channel)->$level($message, $logData);
+        $logger = (new \App\Logging\DailyLog())(['name' => $channel]);
+        $logger->$level($message, $logData);
     }
 }
 
