@@ -54,17 +54,17 @@
 
             <div class="mt-10" style="display: flex; gap: 10px; justify-content: center; align-items: center; flex-wrap: wrap;">
                 <a href="login/google" target="_blank">
-                    <img src="{{ asset('assets/auth/web_light_sq_na@2x.png') }}" alt="">
+                    <img src="{{ asset('assets/auth/google_login.png') }}" alt="" style="width: 80px; height: 80px;">
                 </a>
-                <a href="login/google">
-                    <img src="{{ asset('assets/auth/web_light_sq_na@2x.png') }}" alt="">
+                <a href="login/naver" target="_blank">
+                    <img src="{{ asset('assets/auth/naver_login.png') }}" alt="" style="width: 80px; height: 80px;">
                 </a>
-                <a href="login/google">
-                    <img src="{{ asset('assets/auth/web_light_sq_na@2x.png') }}" alt="">
+                <a href="login/kakao" target="_blank">
+                    <img src="{{ asset('assets/auth/kakao_login.png') }}" alt="" style="width: 80px; height: 80px;">
                 </a>
-                <a href="login/google">
+                {{-- <a href="login/google">
                     <img src="{{ asset('assets/auth/web_light_sq_na@2x.png') }}" alt="">
-                </a>
+                </a> --}}
             </div>
         </form>
     </x-auth-card>
