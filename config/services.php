@@ -40,4 +40,10 @@ return [
         'redirect' => env('GOOGLE_REDIRECT'),
     ],
 
+    'naver' => [
+        'client_id' => env('NAVER_CLIENT_ID', null),
+        'client_secret' => env('NAVER_CLIENT_SECRET', null),
+        'redirect' => env('NAVER_REDIRECT'),
+    ],
+
 ];

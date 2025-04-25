@@ -30,7 +30,7 @@ class LoginController extends Controller
     }
 
     /**
-     * 구글 소셜 로그인 콜백 처리하는 메소드
+     * 구글 소셜 로그인 콜백 처리
      *
      * @return  [type]  [return description]
      */
@@ -40,7 +40,27 @@ class LoginController extends Controller
     }
 
     /**
-     * 통합회원 전환을 처리하는 메소드
+     * 네이버 소셜 로그인 리다이렉트
+     *
+     * @return  [type]  [return description]
+     */
+    public function redirectToNaver()
+    {
+        return Socialite::driver('naver')->redirect();
+    }
+
+    /**
+     * 네이버 소셜 로그인 콜백 처리
+     *
+     * @return  [type]  [return description]
+     */
+    public function handleNaverCallback()
+    {
+        return $this->socialLoginService->handleNaverCallback();
+    }
+
+    /**
+     * 통합회원 전환을 처리
      *
      * @return  JsonResponse
      */

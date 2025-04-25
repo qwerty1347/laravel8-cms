@@ -53,10 +53,10 @@
             </div>
 
             <div class="mt-10" style="display: flex; gap: 10px; justify-content: center; align-items: center; flex-wrap: wrap;">
-                <a href="login/google" target="_blank">
+                <a href="{{ route('social.google.login') }}" target="_blank">
                     <img src="{{ asset('assets/auth/google_login.png') }}" alt="" style="width: 80px; height: 80px;">
                 </a>
-                <a href="login/naver" target="_blank">
+                <a href="{{ route('social.naver.login') }}" target="_blank">
                     <img src="{{ asset('assets/auth/naver_login.png') }}" alt="" style="width: 80px; height: 80px;">
                 </a>
                 <a href="login/kakao" target="_blank">

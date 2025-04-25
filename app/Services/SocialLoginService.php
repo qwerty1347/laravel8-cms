@@ -30,30 +30,33 @@ class SocialLoginService
         $this->socialAccountRepository = new SocialAccountRepository();
     }
 
+    /**
+     * 구글 소셜 로그인 콜백 처리하는 메소드
+     *
+     * @return  [type]  [return description]
+     */
     public function handleGoogleCallback()
     {
-        DB::beginTransaction();
-
         try {
+            DB::beginTransaction();
             $socialUser = Socialite::driver('google')->stateless()->user();
             $user = $this->userRepository->getUserWithSocialAccountRow($socialUser->getEmail(), $socialUser->getId());
 
 
-// // TODO:
-/**
- *
- * 1. User 없는 경우
- *  - 생성 User 생성, SocialAccount 생성, OauthToken 생성
- *  - 로그인
- *
- * 2. User 있고 SocialAccount 없는 경우
- *  - 블레이드 페이지로 이동 (통합 하시겠습니까?)
- *  - Y: SocialAccount 생성, OauthToken 생성
- *  - N: 가입된 회원아이디로 로그인해 주세요.
- *
- * 3. User 있고 SocialAccount 있는 경우
- *  - 로그인
- */
+            /**
+             *
+             * 1. User 없는 경우
+             *  - 생성 User 생성, SocialAccount 생성, OauthToken 생성
+             *  - 로그인
+             *
+             * 2. User 있고 SocialAccount 없는 경우
+             *  - 블레이드 페이지로 이동 (통합 하시겠습니까?)
+             *  - Y: SocialAccount 생성, OauthToken 생성
+             *  - N: 가입된 회원아이디로 로그인해 주세요.
+             *
+             * 3. User 있고 SocialAccount 있는 경우
+             *  - 로그인
+             */
 
             if (!isset($user)) {
                 $user = $this->handleNotUser(SocialConstant::GOOGLE, $socialUser);
@@ -95,6 +98,40 @@ class SocialLoginService
             return redirect('login');
         }
 
+    }
+
+    /**
+     * 네이버 소셜 로그인 콜백 처리하는 메소드
+     *
+     * @return  [type]  [return description]
+     */
+    public function handleNaverCallback()
+    {
+        try {
+            $socialUser = Socialite::driver('naver')->stateless()->user();
+
+
+            /**
+             *
+             * 1. User 없는 경우
+             *  - 생성 User 생성(email란에 고유아이디 값으로), SocialAccount 생성, OauthToken 생성
+             *  - 로그인
+             *
+             * 2. User 있고 SocialAccount 없는 경우
+             *  - 블레이드 페이지로 이동 (통합 하시겠습니까?)
+             *  - Y: SocialAccount 생성, OauthToken 생성
+             *  - N: 가입된 회원아이디로 로그인해 주세요.
+             *
+             * 3. User 있고 SocialAccount 있는 경우
+             *  - 로그인
+             */
+
+            dd($socialUser);
+        }
+
+        catch (Exception $e) {
+            dd($e->getMessage());
+        }
     }
 
     /**
