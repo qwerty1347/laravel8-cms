@@ -16,7 +16,8 @@
         "laravel/socialite": "^5.16",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.4",
-        "livewire/livewire": "^2.5"
+        "livewire/livewire": "^2.5",
+        "socialiteproviders/naver": "^4.1"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
