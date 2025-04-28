@@ -9,15 +9,22 @@ class UserRepository
     public function __construct() {
     }
 
-    public function getUserWithSocialAccountRow(string $email, string $socialProviderId): ?User
+    public function getUserWithSocialAccountRow(string $email, string $socialProviderId=""): ?User
     {
         return User::with(['socialAccounts'])
         ->where(['email' => $email])
-        ->where(function ($query) use ($socialProviderId) {
-            $query->whereHas('socialAccounts', function ($q) use ($socialProviderId) {
-                $q->where('provider_id', $socialProviderId);
-            })->orDoesntHave('socialAccounts');
+        ->when(!empty($socialProviderId), function ($query) use ($socialProviderId) {
+           $query->where(function ($query) use ($socialProviderId) {
+                $query->whereHas('socialAccounts', function ($query) use ($socialProviderId) {
+                    $query->where('provider_id', $socialProviderId);
+                })->orDoesntHave('socialAccounts');
+           });
         })
+        // ->where(function ($query) use ($socialProviderId) {
+        //     $query->whereHas('socialAccounts', function ($q) use ($socialProviderId) {
+        //         $q->where('provider_id', $socialProviderId);
+        //     })->orDoesntHave('socialAccounts');
+        // })
         ->first();
     }
 

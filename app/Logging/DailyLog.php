@@ -16,6 +16,11 @@ class DailyLog
         $date = Carbon::now()->format('Y-m-d');
         $log = $logPath . "{$date}.log";
 
+        if (!file_exists($log)) {
+            touch($log);
+            chmod($log, 0777);
+        }
+
         $logger = new Logger('date-daily');
         $formatter = new LineFormatter(
             "[%datetime%] %level_name%: %message% %context% %extra%\n",

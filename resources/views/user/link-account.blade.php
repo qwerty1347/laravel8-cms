@@ -82,7 +82,7 @@
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             type: "post",
-            url: "{{ route('social.link-account') }}",
+            url: "{{ $linkAccount }}",
             data: {
                 userId: @json($userId),
                 socialData: @json($socialData),
