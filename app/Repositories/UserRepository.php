@@ -9,7 +9,7 @@ class UserRepository
     public function __construct() {
     }
 
-    public function getUserWithSocialAccountRow(string $email, string $socialProviderId=""): ?User
+    public function getUserWithSocialAccountRow(string $email, string $socialProviderId): ?User
     {
         return User::with(['socialAccounts'])
         ->where(['email' => $email])

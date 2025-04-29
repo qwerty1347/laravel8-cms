@@ -47,26 +47,44 @@ class NaverService extends SocialLoginService
      * 3. User 있고 SocialAccount 있는 경우
      *  - 로그인
      *
-     * @return  [type]  [return description]
+     * @return  mixed
      */
     public function handleCallback()
     {
         try {
+            DB::beginTransaction();
             $socialUser = Socialite::driver('naver')->stateless()->user();
-            $user = $this->userRepository->getUserWithSocialAccountRow($socialUser->getId());
+            $user = $this->userRepository->getUserWithSocialAccountRow($socialUser->getEmail(), $socialUser->getId());
 
             if (!isset($user)) {
                 $user = $this->handleNotUser(SocialConstant::NAVER, $socialUser);
             }
             else if (isset($user) && $user->socialAccounts->isEmpty()) {
-                // TODO: 여기해야함
-                dd(2);
+
+                return view('user.link-account')->with([
+                    'userId' => $user->id,
+                    'socialData' => [
+                        'social' => SocialConstant::GOOGLE,
+                        'socialUser' => [
+                            'name'          => $socialUser->getName(),
+                            'email'         => $socialUser->getEmail(),
+                            'provider_id'   => $socialUser->getId(),
+                            'access_token'  => $socialUser->token,
+                            'refresh_token' => $socialUser->refreshToken,
+                            'expires_in'    => $socialUser->expiresIn
+                        ]
+                    ],
+                    'linkAccount' => route('social.naver.link-account')
+                ]);
             }
             else {
-                // 3)
+                $this->handleSocialAccountsUser($user, $user->socialAccounts);
             }
 
-            dd("DONE");
+            Auth::login($user, true);
+            DB::commit();
+
+            return redirect()->to('/admin');
         }
         catch (Exception $e) {
             DB::rollBack();
@@ -133,7 +151,41 @@ class NaverService extends SocialLoginService
      */
     public function handleLinkUserAccount(int $userId, array $socialData): JsonResponse
     {
-        dd(2);
+        try {
+            DB::beginTransaction();
+            $socialAccount = $this->socialAccountRepository->firstOrCreate(
+                [
+                    'user_id'       => $userId,
+                    'provider_name' => $socialData['social'],
+                    'provider_id'   => $socialData['socialUser']['provider_id']
+                ]
+            );
+
+            $this->oauthTokenRepository->updateOrCreate(
+                [
+                    'user_id'           => $userId,
+                    'social_account_id' => $socialAccount->id
+                ],
+                [
+                    'access_token'  => $socialData['socialUser']['access_token'],
+                    'refresh_token' => $socialData['socialUser']['refresh_token'],
+                    'expires_at'    => now()->addSeconds($socialData['socialUser']['expires_in'])
+                ]
+            );
+
+            $user = $this->userRepository->getUserWithSocialAccountRow($socialData['socialUser']['email'], $socialData['socialUser']['provider_id']);
+
+            Auth::login($user, true);
+            DB::commit();
+
+            return response()->json(handleSuccessResult(), HttpCodeConstant::OK, [], JSON_UNESCAPED_UNICODE);
+        }
+        catch (Exception $e) {
+            DB::rollBack();
+            $logMessage = "#00 ".$e->getMessage()." | FILE: ".$e->getFile()." | LINE: ".$e->getLine();
+            logMessage('adminlog', 'error', $logMessage);
+            return response()->json(handleFailureResult(HttpCodeConstant::INTERVAL_SERVER_ERROR, $e->getMessage()), HttpCodeConstant::INTERVAL_SERVER_ERROR, [], JSON_UNESCAPED_UNICODE);
+        }
     }
 
     /**
@@ -147,7 +199,25 @@ class NaverService extends SocialLoginService
      */
     public function handleSocialAccountsUser(User $user)
     {
-        dd(3);
+        $oauthToken = $this->oauthTokenRepository->firstWhere([
+            'user_id'           => $user->id,
+            'social_account_id' => $user->getSocialAccountsRow()->id
+        ]);
+
+        if (!isset($oauthToken)) {
+            throw new Exception('토큰이 존재하지 않습니다.', HttpCodeConstant::UNAUTHORIZED);
+        }
+
+        if ($oauthToken && Carbon::now()->greaterThan($oauthToken->expires_at)) {
+            $response = $this->refreshToken($oauthToken->refresh_token);
+            $this->oauthTokenRepository->update(
+                ['id' => $oauthToken->id],
+                [
+                    'access_token' => $response['data']['access_token'],
+                    'expires_at' => now()->addSeconds($response['data']['expires_in'])
+                ]
+            );
+        }
     }
 
     /**
@@ -159,6 +229,18 @@ class NaverService extends SocialLoginService
      */
     public function refreshToken(string $refreshToken): array
     {
-        dd(4);
+        $clientId = config('services.naver.client_id');
+        $clientSecret = config('services.naver.client_secret');
+
+        return $this->guzzleHttpService->postRequest(
+            'https://nid.naver.com/oauth2.0/token',
+            ['Content-Type' => 'application/x-www-form-urlencoded'],
+            [
+                'client_id'     => $clientId,
+                'client_secret' => $clientSecret,
+                'refresh_token' => $refreshToken,
+                'grant_type'    => 'refresh_token'
+            ]
+        );
     }
 }
