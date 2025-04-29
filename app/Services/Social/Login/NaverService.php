@@ -59,13 +59,15 @@ class NaverService extends SocialLoginService
                 $user = $this->handleNotUser(SocialConstant::NAVER, $socialUser);
             }
             else if (isset($user) && $user->socialAccounts->isEmpty()) {
-                // 2)
+                // TODO: 여기해야함
+                dd(2);
             }
             else {
                 // 3)
             }
-        }
 
+            dd("DONE");
+        }
         catch (Exception $e) {
             DB::rollBack();
             $logMessage = "#1 ".$e->getMessage()." | FILE: ".$e->getFile()." | LINE: ".$e->getLine();
@@ -81,21 +83,19 @@ class NaverService extends SocialLoginService
      * 1) 소셜 회원가입으로 최초 로그인 하는 경우를 처리하는 메소드 (User 없는 경우)
      * - User 생성, SocialAccount 생성, OauthToken 생성
      *
-     * @param   string   $socialProvider  [$socialProvider description]
-     * @param   TwoUser  $socialUser      [$socialUser description]
+     * @param   string   $socialProvider  소셜 이름
+     * @param   TwoUser  $socialUser
      *
      * @return  User
      */
     public function handleNotUser(string $socialProvider, TwoUser $socialUser): User
     {
-        // TODO: 여기 작업 해야 함 !
-        dd(0);
-
+        $identifier = !empty($socialUser->getEmail()) ? $socialUser->getEmail() : $socialUser->getId();
         $user = $this->userRepository->firstOrCreate(
-            ['email' => $socialUser->getEmail()],
+            ['email' => $identifier],
             [
                 'name'     => $socialUser->getName(),
-                'email'    => $socialUser->getEmail(),
+                'email'    => $identifier,
                 'password' => null
             ]
         );
@@ -122,6 +122,7 @@ class NaverService extends SocialLoginService
 
         return $user;
     }
+
     /**
      * 2) 통합회원 전환을 처리하는 메소드
      *  - SocialAccount 생성, OauthToken 생성
@@ -140,7 +141,7 @@ class NaverService extends SocialLoginService
      * - User 있고 SocialAccount 있는 경우
      * - 만료기간 검사 후 OauthToken 업데이트
      *
-     * @param   User  $user  users 테이블 Row
+     * @param   User
      *
      * @return  mixed
      */

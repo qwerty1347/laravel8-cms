@@ -101,8 +101,8 @@ class GoogleService extends SocialLoginService
      * 1) 소셜 회원가입으로 최초 로그인 하는 경우를 처리하는 메소드 (User 없는 경우)
      * - User 생성, SocialAccount 생성, OauthToken 생성
      *
-     * @param   string   $socialProvider  [$socialProvider description]
-     * @param   TwoUser  $socialUser      [$socialUser description]
+     * @param   string   $socialProvider  소셜 이름
+     * @param   TwoUser  $socialUser
      *
      * @return  User
      */
@@ -192,7 +192,7 @@ class GoogleService extends SocialLoginService
      * - User 있고 SocialAccount 있는 경우
      * - 만료기간 검사 후 OauthToken 업데이트
      *
-     * @param   User  $user  users 테이블 Row
+     * @param   User  $user
      *
      * @return  mixed
      */

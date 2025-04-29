@@ -29,7 +29,7 @@ class LoginController extends Controller
     public function redirectToGoogle(): RedirectResponse
     {
         return Socialite::driver('google')
-        // ->with(['access_type' => 'offline', 'prompt' => 'consent'])
+        ->with(['access_type' => 'offline', 'prompt' => 'consent'])
         ->redirect();
     }
 
@@ -74,6 +74,6 @@ class LoginController extends Controller
      */
     public function handleNaverCallback()
     {
-        // return $this->socialLoginService->handleNaverCallback();
+        return $this->naverService->handleCallback();
     }
 }
