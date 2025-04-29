@@ -10,7 +10,7 @@ use Laravel\Socialite\Two\User as TwoUser;
 use App\Services\Social\Login\GoogleService;
 use App\Models\User;
 
-class GoogleServicesTest extends TestCase
+class GoogleServiceTest extends TestCase
 {
     protected GoogleService $googleService;
     protected TwoUser $socialUser;
