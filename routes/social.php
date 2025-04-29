@@ -14,4 +14,5 @@ Route::name('google.')->group(function () {
 Route::name('naver.')->group(function () {
     Route::get('login/naver', [LoginController::class, 'redirectToNaver'])->name('login');
     Route::get('login/naver/callback', [LoginController::class, 'handleNaverCallback'])->name('callback');
+    Route::post('link-account', [LoginController::class, 'handleNaverLinkUserAccount'])->name('link-account');
 });

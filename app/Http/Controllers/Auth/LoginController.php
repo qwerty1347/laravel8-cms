@@ -44,7 +44,7 @@ class LoginController extends Controller
     }
 
     /**
-     * 구글 통합회원 전환을 처리
+     * 구글 통합회원 전환 처리
      *
      * @return  JsonResponse
      */
@@ -75,5 +75,19 @@ class LoginController extends Controller
     public function handleNaverCallback()
     {
         return $this->naverService->handleCallback();
+    }
+
+    /**
+     * 네이버 통합회원 전환 처리
+     *
+     * @return  JsonResponse
+     */
+    public function handleNaverLinkUserAccount(): JsonResponse
+    {
+        if (empty(request()->post('userId')) || empty(request()->post('socialData'))) {
+            response()->json(handleFailureResult(HttpCodeConstant::BAD_REQUEST, '소셜계정 정보가 존재하지 않습니다.'), HttpCodeConstant::BAD_REQUEST, [], JSON_UNESCAPED_UNICODE);
+        }
+
+        return $this->naverService->handleLinkUserAccount(request()->post('userId'), request()->post('socialData'));
     }
 }

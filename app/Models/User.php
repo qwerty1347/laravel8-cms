@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -89,7 +88,12 @@ class User extends Authenticatable
         return $this->hasManyThrough(oauthTokens::class, SocialAccount::class);
     }
 
-    public function getSocialAccountsRow()
+    /**
+     * social_accounts list 중 하나의 row 를 반환하는 메소드
+     *
+     * @return  ?SocialAccount
+     */
+    public function getSocialAccountsRow(): ?SocialAccount
     {
         return $this->socialAccounts()->first();
     }
