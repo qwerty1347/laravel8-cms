@@ -4,6 +4,6 @@ namespace App\Constants;
 
 class SocialConstant
 {
-    public const GOOGLE = "Google";
-    public const NAVER  = "Naver";
+    public const GOOGLE = "google";
+    public const NAVER  = "naver";
 }
