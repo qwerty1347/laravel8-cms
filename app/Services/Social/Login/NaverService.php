@@ -54,7 +54,7 @@ class NaverService extends SocialLoginService
         try {
             DB::beginTransaction();
             $socialUser = Socialite::driver('naver')->stateless()->user();
-            $user = $this->userRepository->getUserWithSocialAccountRow($socialUser->getId());
+            $user = $this->userRepository->getUserWithSocialAccountRow($socialUser->getEmail(), $socialUser->getId());
 
             if (!isset($user)) {
                 $user = $this->handleNotUser(SocialConstant::NAVER, $socialUser);
