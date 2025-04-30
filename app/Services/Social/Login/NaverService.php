@@ -53,7 +53,7 @@ class NaverService extends SocialLoginService
     {
         try {
             DB::beginTransaction();
-            $socialUser = Socialite::driver('naver')->stateless()->user();
+            $socialUser = Socialite::driver(SocialConstant::NAVER)->stateless()->user();
             $user = $this->userRepository->getUserWithSocialAccountRow($socialUser->getEmail(), $socialUser->getId());
 
             if (!isset($user)) {

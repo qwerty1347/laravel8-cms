@@ -53,7 +53,7 @@ class GoogleService extends SocialLoginService
     {
         try {
             DB::beginTransaction();
-            $socialUser = Socialite::driver('google')->stateless()->user();
+            $socialUser = Socialite::driver(SocialConstant::GOOGLE)->stateless()->user();
             $user = $this->userRepository->getUserWithSocialAccountRow($socialUser->getEmail(), $socialUser->getId());
 
             if (!isset($user)) {
