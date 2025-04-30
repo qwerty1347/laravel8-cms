@@ -38,12 +38,14 @@ return [
         'client_id' => env('GOOGLE_CLIENT_ID', null),
         'client_secret' => env('GOOGLE_CLIENT_SECRET', null),
         'redirect' => env('GOOGLE_REDIRECT'),
+        'refresh_token_uri' => 'https://oauth2.googleapis.com/token',
     ],
 
     'naver' => [
         'client_id' => env('NAVER_CLIENT_ID', null),
         'client_secret' => env('NAVER_CLIENT_SECRET', null),
         'redirect' => env('NAVER_REDIRECT'),
+        'refresh_token_uri' => 'https://nid.naver.com/oauth2.0/token',
     ],
 
 ];

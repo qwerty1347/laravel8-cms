@@ -6,17 +6,20 @@ use App\Constants\HttpCodeConstant;
 use App\Http\Controllers\Controller;
 use App\Services\Social\Login\GoogleService;
 use App\Services\Social\Login\NaverService;
+use App\Services\SocialLoginService;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 
 class LoginController extends Controller
 {
+    protected SocialLoginService $socialLoginService;
     protected GoogleService $googleService;
     protected NaverService $naverService;
 
     public function __construct()
     {
+        $this->socialLoginService = new SocialLoginService();
         $this->googleService = new GoogleService();
         $this->naverService = new NaverService();
     }
@@ -54,7 +57,7 @@ class LoginController extends Controller
             response()->json(handleFailureResult(HttpCodeConstant::BAD_REQUEST, '소셜계정 정보가 존재하지 않습니다.'), HttpCodeConstant::BAD_REQUEST, [], JSON_UNESCAPED_UNICODE);
         }
 
-        return $this->googleService->handleLinkUserAccount(request()->post('userId'), request()->post('socialData'));
+        return $this->socialLoginService->linkUserAccount(request()->post('userId'), request()->post('socialData'));
     }
 
     /**
@@ -74,7 +77,7 @@ class LoginController extends Controller
      */
     public function handleNaverCallback()
     {
-        return $this->naverService->handleCallback();
+        return $this->naverService->handleNaverCallback();
     }
 
     /**
@@ -88,6 +91,6 @@ class LoginController extends Controller
             response()->json(handleFailureResult(HttpCodeConstant::BAD_REQUEST, '소셜계정 정보가 존재하지 않습니다.'), HttpCodeConstant::BAD_REQUEST, [], JSON_UNESCAPED_UNICODE);
         }
 
-        return $this->naverService->handleLinkUserAccount(request()->post('userId'), request()->post('socialData'));
+        return $this->socialLoginService->linkUserAccount(request()->post('userId'), request()->post('socialData'));
     }
 }
