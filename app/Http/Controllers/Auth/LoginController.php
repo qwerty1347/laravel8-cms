@@ -7,9 +7,9 @@ use App\Http\Controllers\Controller;
 use App\Services\Social\Login\GoogleService;
 use App\Services\Social\Login\NaverService;
 use App\Services\SocialLoginService;
-use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Laravel\Socialite\Facades\Socialite;
 
 class LoginController extends Controller
 {
@@ -39,11 +39,11 @@ class LoginController extends Controller
     /**
      * 구글 소셜 로그인 콜백 처리
      *
-     * @return  mixed
+     * @return  mixed  (view|redirect)
      */
     public function handleGoogleCallback()
     {
-        return $this->googleService->handleCallback();
+        return $this->googleService->handleGoogleCallback();
     }
 
     /**
@@ -54,7 +54,7 @@ class LoginController extends Controller
     public function handleGoogleLinkUserAccount(): JsonResponse
     {
         if (empty(request()->post('userId')) || empty(request()->post('socialData'))) {
-            response()->json(handleFailureResult(HttpCodeConstant::BAD_REQUEST, '소셜계정 정보가 존재하지 않습니다.'), HttpCodeConstant::BAD_REQUEST, [], JSON_UNESCAPED_UNICODE);
+            return response()->json(handleFailureResult(HttpCodeConstant::BAD_REQUEST, '소셜계정 정보가 존재하지 않습니다.'), HttpCodeConstant::BAD_REQUEST, [], JSON_UNESCAPED_UNICODE);
         }
 
         return $this->socialLoginService->linkUserAccount(request()->post('userId'), request()->post('socialData'));
@@ -65,7 +65,7 @@ class LoginController extends Controller
      *
      * @return  RedirectResponse
      */
-    public function redirectToNaver()
+    public function redirectToNaver(): RedirectResponse
     {
         return Socialite::driver('naver')->redirect();
     }
@@ -73,7 +73,7 @@ class LoginController extends Controller
     /**
      * 네이버 소셜 로그인 콜백 처리
      *
-     * @return  mixed
+     * @return  mixed  (view|redirect)
      */
     public function handleNaverCallback()
     {
@@ -88,7 +88,7 @@ class LoginController extends Controller
     public function handleNaverLinkUserAccount(): JsonResponse
     {
         if (empty(request()->post('userId')) || empty(request()->post('socialData'))) {
-            response()->json(handleFailureResult(HttpCodeConstant::BAD_REQUEST, '소셜계정 정보가 존재하지 않습니다.'), HttpCodeConstant::BAD_REQUEST, [], JSON_UNESCAPED_UNICODE);
+            return response()->json(handleFailureResult(HttpCodeConstant::BAD_REQUEST, '소셜계정 정보가 존재하지 않습니다.'), HttpCodeConstant::BAD_REQUEST, [], JSON_UNESCAPED_UNICODE);
         }
 
         return $this->socialLoginService->linkUserAccount(request()->post('userId'), request()->post('socialData'));

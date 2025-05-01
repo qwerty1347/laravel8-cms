@@ -2,16 +2,18 @@
 
 namespace App\Services;
 
-use Carbon\Carbon;
 use Exception;
+use Carbon\Carbon;
 use App\Constants\HttpCodeConstant;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use App\Repositories\SocialAccountRepository;
 use App\Repositories\Auth\OauthTokenRepository;
 use Illuminate\Http\JsonResponse;
-use Laravel\Socialite\Two\User as TwoUser;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use Laravel\Socialite\Two\User as TwoUser;
 
 class SocialLoginService
 {
@@ -56,8 +58,8 @@ class SocialLoginService
      * 통합회원 전환을 처리하는 메소드
      *  - SocialAccount 생성, OauthToken 생성
      *
-     * @param   int     $userId      User 테이블 PK
-     * @param   array   $socialData  [social=>소셜 이름, socialUser=>[name=>소셜닉네임, email=>소셜이메일, provider_id=>소셜고유아이디, access_token=>소셜 액세스 토큰, refresh_token=>소셜 리프레쉬 토큰, expires_in=>소셜 만료]]
+     * @param   int           $userId      User 테이블 PK
+     * @param   array         $socialData  [social=>소셜 이름, socialUser=>[name=>소셜닉네임, email=>소셜이메일, provider_id=>소셜고유아이디, access_token=>소셜 액세스 토큰, refresh_token=>소셜 리프레쉬 토큰, expires_in=>소셜 만료]]
      * @return  JsonResponse
      */
     public function linkUserAccount(int $userId, array $socialData): JsonResponse
@@ -147,7 +149,7 @@ class SocialLoginService
      * - User 있고 SocialAccount 있는 경우
      * - 만료기간 검사 후 OauthToken 업데이트
      *
-     * @param   User  $user  users 테이블 Row
+     * @param   User  $user  users 테이블 row
      *
      * @return  mixed
      */
