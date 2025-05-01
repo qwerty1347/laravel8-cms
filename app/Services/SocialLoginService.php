@@ -2,16 +2,18 @@
 
 namespace App\Services;
 
-use Carbon\Carbon;
 use Exception;
+use Carbon\Carbon;
 use App\Constants\HttpCodeConstant;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use App\Repositories\SocialAccountRepository;
 use App\Repositories\Auth\OauthTokenRepository;
 use Illuminate\Http\JsonResponse;
-use Laravel\Socialite\Two\User as TwoUser;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use Laravel\Socialite\Two\User as TwoUser;
 
 class SocialLoginService
 {
@@ -56,8 +58,8 @@ class SocialLoginService
      * 통합회원 전환을 처리하는 메소드
      *  - SocialAccount 생성, OauthToken 생성
      *
-     * @param   int     $userId      User 테이블 PK
-     * @param   array   $socialData  [social=>소셜 이름, socialUser=>[name=>소셜닉네임, email=>소셜이메일, provider_id=>소셜고유아이디, access_token=>소셜 액세스 토큰, refresh_token=>소셜 리프레쉬 토큰, expires_in=>소셜 만료]]
+     * @param   int           $userId      User 테이블 PK
+     * @param   array         $socialData  [social=>소셜 이름, socialUser=>[name=>소셜닉네임, email=>소셜이메일, provider_id=>소셜고유아이디, access_token=>소셜 액세스 토큰, refresh_token=>소셜 리프레쉬 토큰, expires_in=>소셜 만료]]
      * @return  JsonResponse
      */
     public function linkUserAccount(int $userId, array $socialData): JsonResponse
@@ -100,7 +102,7 @@ class SocialLoginService
     }
 
     /**
-     * 소셜 회원가입으로 최초 로그인 하는 경우를 처리하는 메소드 (User 없는 경우)
+     * 소셜 회원가입으로 최초 로그인 하는 경우를 처리하는 메소드
      * - User 생성, SocialAccount 생성, OauthToken 생성
      *
      * @param   TwoUser  $socialUser  소셜에서 제공하는 회원정보
@@ -144,10 +146,9 @@ class SocialLoginService
 
     /**
      * 소셜 회원가입으로 로그인 하는 경우를 처리하는 메소드
-     * - User 있고 SocialAccount 있는 경우
-     * - 만료기간 검사 후 OauthToken 업데이트
+     * - access_token 만료기간 검사 후 refresh_token 을 이용해 access_token 재발급
      *
-     * @param   User  $user  users 테이블 Row
+     * @param   User  $user  users 테이블 row
      *
      * @return  mixed
      */
@@ -175,7 +176,7 @@ class SocialLoginService
     }
 
     /**
-     * Refresh Token을 통해 Access Token을 재발급 받는 메소드
+     * refresh_token 을 이용해 access_token 을 재발급 받는 메소드
      *
      * @param   string  $refreshToken
      *

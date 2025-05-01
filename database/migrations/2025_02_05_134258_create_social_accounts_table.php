@@ -15,7 +15,7 @@ class CreateSocialAccountsTable extends Migration
     {
         Schema::create('social_accounts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('provider_name', 100)->comment('소셜 로그인 제공자');
             $table->string('provider_id', 255)->comment('소셜 로그인 아이디');
             $table->timestamps();

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Exception;
 use App\Constants\HttpCodeConstant;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;

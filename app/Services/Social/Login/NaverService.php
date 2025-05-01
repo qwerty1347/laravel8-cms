@@ -25,13 +25,13 @@ class NaverService extends SocialLoginService
      *  - N: 가입된 회원아이디로 로그인해 주세요.
      *
      * 2. User 없는 경우
-     *  - 생성 User 생성(email란에 고유아이디 값으로), SocialAccount 생성, OauthToken 생성
+     *  - 생성 User 생성, SocialAccount 생성, OauthToken 생성
      *  - 로그인
      *
      * 3. User 있고 SocialAccount 있는 경우
      *  - 로그인
      *
-     * @return  mixed
+     * @return  mixed  (view|redirect)
      */
     public function handleNaverCallback()
     {
@@ -42,7 +42,7 @@ class NaverService extends SocialLoginService
             $user = $this->userRepository->getUserWithSocialAccountRow($socialUser->getEmail(), $socialUser->getId());
 
             if (isset($user) && $user->socialAccounts->isEmpty()) {
-                parent::handleLinkUserAccount($socialUser, $user);
+                return parent::handleLinkUserAccount($socialUser, $user);
             }
 
             if (!isset($user)) {
