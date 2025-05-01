@@ -102,7 +102,7 @@ class SocialLoginService
     }
 
     /**
-     * 소셜 회원가입으로 최초 로그인 하는 경우를 처리하는 메소드 (User 없는 경우)
+     * 소셜 회원가입으로 최초 로그인 하는 경우를 처리하는 메소드
      * - User 생성, SocialAccount 생성, OauthToken 생성
      *
      * @param   TwoUser  $socialUser  소셜에서 제공하는 회원정보
@@ -146,8 +146,7 @@ class SocialLoginService
 
     /**
      * 소셜 회원가입으로 로그인 하는 경우를 처리하는 메소드
-     * - User 있고 SocialAccount 있는 경우
-     * - 만료기간 검사 후 OauthToken 업데이트
+     * - access_token 만료기간 검사 후 refresh_token 을 이용해 access_token 재발급
      *
      * @param   User  $user  users 테이블 row
      *
@@ -177,7 +176,7 @@ class SocialLoginService
     }
 
     /**
-     * Refresh Token을 통해 Access Token을 재발급 받는 메소드
+     * refresh_token 을 이용해 access_token 을 재발급 받는 메소드
      *
      * @param   string  $refreshToken
      *
