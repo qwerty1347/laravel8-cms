@@ -12,10 +12,13 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
-    && docker-php-ext-install pdo pdo_mysql zip
+    vim && docker-php-ext-install pdo pdo_mysql zip
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Add PHPUnit alias
+RUN echo "alias phpunit='/var/www/html/vendor/bin/phpunit'" >> ~/.bashrc
 
 # Set working directory
 WORKDIR /var/www/html
