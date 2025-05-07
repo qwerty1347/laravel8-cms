@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Constants\HttpCodeConstant;
+use App\Constants\SocialConstant;
 use App\Http\Controllers\Controller;
 use App\Services\Social\Login\GoogleService;
+use App\Services\Social\Login\KakaoService;
 use App\Services\Social\Login\NaverService;
 use App\Services\SocialLoginService;
 use Illuminate\Http\JsonResponse;
@@ -16,12 +18,14 @@ class LoginController extends Controller
     protected SocialLoginService $socialLoginService;
     protected GoogleService $googleService;
     protected NaverService $naverService;
+    protected KakaoService $kakaoService;
 
     public function __construct()
     {
         $this->socialLoginService = new SocialLoginService();
         $this->googleService = new GoogleService();
         $this->naverService = new NaverService();
+        $this->kakaoService = new KakaoService();
     }
 
     /**
@@ -31,7 +35,7 @@ class LoginController extends Controller
      */
     public function redirectToGoogle(): RedirectResponse
     {
-        return Socialite::driver('google')
+        return Socialite::driver(SocialConstant::GOOGLE)
         ->with(['access_type' => 'offline', 'prompt' => 'consent'])
         ->redirect();
     }
@@ -47,7 +51,7 @@ class LoginController extends Controller
     }
 
     /**
-     * 구글 통합회원 전환 처리
+     * 구글 소셜 통합회원 전환 처리
      *
      * @return  JsonResponse
      */
@@ -67,7 +71,7 @@ class LoginController extends Controller
      */
     public function redirectToNaver(): RedirectResponse
     {
-        return Socialite::driver('naver')->redirect();
+        return Socialite::driver(SocialConstant::NAVER)->redirect();
     }
 
     /**
@@ -81,7 +85,7 @@ class LoginController extends Controller
     }
 
     /**
-     * 네이버 통합회원 전환 처리
+     * 네이버 소셜 통합회원 전환 처리
      *
      * @return  JsonResponse
      */
@@ -92,5 +96,35 @@ class LoginController extends Controller
         }
 
         return $this->socialLoginService->linkUserAccount(request()->post('userId'), request()->post('socialData'));
+    }
+
+    /**
+     * 카카오 소셜 로그인 리다이렉트
+     *
+     * @return  [type]  [return description]
+     */
+    public function redirectToKakao()
+    {
+
+    }
+
+    /**
+     * 카카오 소셜 로그인 콜백 처리
+     *
+     * @return  mixed  (view|redirect)
+     */
+    public function handleKakaoCallback()
+    {
+
+    }
+
+    /**
+     * 카카오 소셜 통합회원 전환 처리
+     *
+     * @return  [type]  [return description]
+     */
+    public function handleKakaoLinkUserAccount()
+    {
+
     }
 }
