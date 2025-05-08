@@ -83,10 +83,10 @@ class GoogleServiceTest extends TestCase
     {
         $user = $this->googleService->handleNotUser($this->socialUser);
 
-        // 1. 반환된 객체가 User 타입 검증
+        // 반환된 객체 타입 검증
         $this->assertInstanceOf(User::class, $user);
 
-        // 2. User 객체의 값 검증
+        // 반환된 객체 프로퍼티 검증
         $this->assertEquals(self::NAME, $user->name);
         $this->assertEquals(self::EMAIL, $user->email);
     }
@@ -112,7 +112,7 @@ class GoogleServiceTest extends TestCase
             ]
         );
 
-        // 1. HTTP 상태 코드 검증
+        // HTTP 상태 코드 검증
         $this->assertEquals(HttpCodeConstant::OK, $response->getStatusCode());
     }
 
