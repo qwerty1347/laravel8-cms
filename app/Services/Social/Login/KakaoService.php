@@ -56,7 +56,7 @@ class KakaoService extends SocialLoginService
             Auth::login($user, true);
             DB::commit();
 
-            return redirect()->to('/admin');
+            return redirect()->to('/admin')->with('login_success', __('auth.last_login_at').': '.$user->last_login_at);
 
         } catch (Exception $e) {
             DB::rollBack();

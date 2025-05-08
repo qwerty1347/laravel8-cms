@@ -32,4 +32,9 @@ class UserRepository
     {
         return User::firstOrCreate($where, $data);
     }
+
+    public function update(array $where, array $update)
+    {
+        User::where($where)->update($update);
+    }
 }

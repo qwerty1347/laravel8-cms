@@ -748,5 +748,9 @@
 @endsection
 
 @section('additional-scripts')
-
+<script>
+    @if (session('login_success'))
+        toastr.success("{!! session('login_success') !!}");
+    @endif
+</script>
 @endsection

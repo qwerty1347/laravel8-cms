@@ -115,9 +115,10 @@ class SocialLoginService
         $user = $this->userRepository->firstOrCreate(
             ['email' => $identifier],
             [
-                'name'     => $socialUser->getName(),
-                'email'    => $identifier,
-                'password' => null
+                'name'          => $socialUser->getName(),
+                'email'         => $identifier,
+                'password'      => null,
+                'last_login_at' => Carbon::now()
             ]
         );
 
@@ -154,6 +155,11 @@ class SocialLoginService
      */
     public function handleSocialAccountsUser(User $user)
     {
+        $this->userRepository->update(
+            ['id' => $user->id],
+            ['last_login_at' => Carbon::now()]
+        );
+
         $oauthToken = $this->oauthTokenRepository->firstWhere([
             'user_id'           => $user->id,
             'social_account_id' => $user->getSocialAccountsRow()->id
