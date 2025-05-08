@@ -3,11 +3,11 @@
 namespace App\Services\Social\Login;
 
 use Exception;
+use App\Constants\SocialConstant;
+use App\Services\SocialLoginService;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use App\Constants\SocialConstant;
-use App\Services\SocialLoginService;
 
 class GoogleService extends SocialLoginService
 {
@@ -38,7 +38,7 @@ class GoogleService extends SocialLoginService
         try {
             DB::beginTransaction();
 
-            $socialUser = Socialite::driver(SocialConstant::GOOGLE)->stateless()->user();
+            $socialUser = Socialite::driver($this->socialProvider)->stateless()->user();
             $user = $this->userRepository->getUserWithSocialAccountRow($socialUser->getEmail(), $socialUser->getId());
 
             if (isset($user) && $user->socialAccounts->isEmpty()) {

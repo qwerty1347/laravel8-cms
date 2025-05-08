@@ -59,12 +59,9 @@
                 <a href="{{ route('social.naver.login') }}" target="_blank">
                     <img src="{{ asset('assets/auth/naver_login.png') }}" alt="" style="width: 80px; height: 80px;">
                 </a>
-                <a href="login/kakao" target="_blank">
+                <a href="{{ route('social.kakao.login') }}" target="_blank">
                     <img src="{{ asset('assets/auth/kakao_login.png') }}" alt="" style="width: 80px; height: 80px;">
                 </a>
-                {{-- <a href="login/google">
-                    <img src="{{ asset('assets/auth/web_light_sq_na@2x.png') }}" alt="">
-                </a> --}}
             </div>
         </form>
     </x-auth-card>

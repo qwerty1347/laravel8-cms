@@ -3,11 +3,11 @@
 namespace App\Services\Social\Login;
 
 use Exception;
+use App\Constants\SocialConstant;
+use App\Services\SocialLoginService;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use App\Constants\SocialConstant;
-use App\Services\SocialLoginService;
 
 class NaverService extends SocialLoginService
 {
@@ -38,8 +38,8 @@ class NaverService extends SocialLoginService
         try {
             DB::beginTransaction();
 
-            $socialUser = Socialite::driver(SocialConstant::NAVER)->stateless()->user();
-            $user = $this->userRepository->getUserWithSocialAccountRow($socialUser->getEmail(), $socialUser->getId());
+            $socialUser = Socialite::driver($this->socialProvider)->stateless()->user();
+            $user = $this->userRepository->getUserWithSocialAccountRow($socialUser->getEmail() ?? $socialUser->getId(), $socialUser->getId());
 
             if (isset($user) && $user->socialAccounts->isEmpty()) {
                 return parent::handleLinkUserAccount($socialUser, $user);

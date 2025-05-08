@@ -111,7 +111,7 @@ class SocialLoginService
      */
     public function handleNotUser(TwoUser $socialUser): User
     {
-        $identifier = !empty($socialUser->getEmail()) ? $socialUser->getEmail() : $socialUser->getId();
+        $identifier = $socialUser->getEmail() ?? $socialUser->getId();
         $user = $this->userRepository->firstOrCreate(
             ['email' => $identifier],
             [
@@ -186,10 +186,10 @@ class SocialLoginService
     {
         $clientId = config('services.'.$this->socialProvider.'.client_id');
         $clientSecret = config('services.'.$this->socialProvider.'.client_secret');
-        $refreshTokenUri = config('services.'.$this->socialProvider.'.refresh_token_uri');
+        $refreshUri = config('services.'.$this->socialProvider.'.refresh');
 
         return $this->guzzleHttpService->postRequest(
-            $refreshTokenUri,
+            $refreshUri,
             ['Content-Type' => 'application/x-www-form-urlencoded'],
             [
                 'client_id'     => $clientId,

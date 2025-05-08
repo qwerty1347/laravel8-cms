@@ -101,11 +101,11 @@ class LoginController extends Controller
     /**
      * 카카오 소셜 로그인 리다이렉트
      *
-     * @return  [type]  [return description]
+     * @return  RedirectResponse
      */
-    public function redirectToKakao()
+    public function redirectToKakao(): RedirectResponse
     {
-
+        return Socialite::driver(SocialConstant::KAKAO)->redirect();
     }
 
     /**
@@ -115,16 +115,20 @@ class LoginController extends Controller
      */
     public function handleKakaoCallback()
     {
-
+        return $this->kakaoService->handleKakaoCallback();
     }
 
     /**
      * 카카오 소셜 통합회원 전환 처리
      *
-     * @return  [type]  [return description]
+     * @return  JsonResponse
      */
-    public function handleKakaoLinkUserAccount()
+    public function handleKakaoLinkUserAccount(): JsonResponse
     {
+        if (empty(request()->post('userId')) || empty(request()->post('socialData'))) {
+            return response()->json(handleFailureResult(HttpCodeConstant::BAD_REQUEST, '소셜계정 정보가 존재하지 않습니다.'), HttpCodeConstant::BAD_REQUEST, [], JSON_UNESCAPED_UNICODE);
+        }
 
+        return $this->socialLoginService->linkUserAccount(request()->post('userId'), request()->post('socialData'));
     }
 }
