@@ -744,7 +744,7 @@
       </div>
       <!-- /.row-->
     </div>
-  </div>
+</div>
 @endsection
 
 @section('additional-scripts')
