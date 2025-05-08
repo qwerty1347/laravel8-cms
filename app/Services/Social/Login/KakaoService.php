@@ -2,8 +2,12 @@
 
 namespace App\Services\Social\Login;
 
+use Exception;
 use App\Constants\SocialConstant;
 use App\Services\SocialLoginService;
+use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class KakaoService extends SocialLoginService
 {
@@ -32,6 +36,36 @@ class KakaoService extends SocialLoginService
      */
     public function handleKakaoCallback()
     {
+        try {
+            DB::beginTransaction();
 
+            $socialUser = Socialite::driver($this->socialProvider)->stateless()->user();
+            $user = $this->userRepository->getUserWithSocialAccountRow($socialUser->getEmail() ?? $socialUser->getId(), $socialUser->getId());
+
+            if (isset($user) && $user->socialAccounts->isEmpty()) {
+                return parent::handleLinkUserAccount($socialUser, $user);
+            }
+
+            if (!isset($user)) {
+                $user = parent::handleNotUser($socialUser);
+            }
+            else {
+                parent::handleSocialAccountsUser($user);
+            }
+
+            Auth::login($user, true);
+            DB::commit();
+
+            return redirect()->to('/admin');
+
+        } catch (Exception $e) {
+            DB::rollBack();
+            $logMessage = "#1 ".$e->getMessage()." | FILE: ".$e->getFile()." | LINE: ".$e->getLine();
+            logMessage('adminlog', 'error', $logMessage);
+
+            dd($e, $e->getMessage(), $e->getFile(), $e->getLine());
+
+            return redirect('login');
+        }
     }
 }

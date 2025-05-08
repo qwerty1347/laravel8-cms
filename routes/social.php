@@ -18,6 +18,8 @@ Route::name('naver.')->group(function () {
 });
 
 // 카카오 소셜 로그인
-Route::prefix('kakao.')->group(function () {
-
+Route::name('kakao.')->group(function () {
+    Route::get('login/kakao', [LoginController::class, 'redirectToKakao'])->name('login');
+    Route::get('login/kakao/callback', [LoginController::class, 'handleKakaoCallback'])->name('callback');
+    Route::post('login/kakao/link-account', [LoginController::class, 'handleKakaoLinkUserAccount'])->name('link-account');
 });
