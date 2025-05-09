@@ -12,7 +12,21 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
-    vim && docker-php-ext-install pdo pdo_mysql zip
+    vim \
+    librdkafka-dev \
+    && docker-php-ext-install pdo pdo_mysql zip
+
+# Set timezone (example: Asia/Seoul)
+RUN echo "Asia/Seoul" > /etc/timezone && dpkg-reconfigure -f noninteractive tzdata
+
+# Install MongoDB PHP extension
+RUN pecl install mongodb-1.15.0 && docker-php-ext-enable mongodb
+
+# Install Kafka (rdkafka) PHP extension
+RUN pecl install rdkafka-5.0.2 && docker-php-ext-enable rdkafka
+
+# Install bcmath and mbstring PHP extensions
+RUN docker-php-ext-install bcmath mbstring
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
