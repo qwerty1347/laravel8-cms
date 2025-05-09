@@ -14,13 +14,14 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     vim \
     librdkafka-dev \
+    libssl-dev \
     && docker-php-ext-install pdo pdo_mysql zip
 
 # Set timezone (example: Asia/Seoul)
 RUN echo "Asia/Seoul" > /etc/timezone && dpkg-reconfigure -f noninteractive tzdata
 
 # Install MongoDB PHP extension
-RUN pecl install mongodb-1.15.0 && docker-php-ext-enable mongodb
+RUN pecl install mongodb-1.16.0 && docker-php-ext-enable mongodb
 
 # Install Kafka (rdkafka) PHP extension
 RUN pecl install rdkafka-5.0.2 && docker-php-ext-enable rdkafka
