@@ -14,5 +14,6 @@ yarn-error.log
 /.idea
 /.vscode
 /.docker/mysql/data
+/.docker/mongo/data
 /storage/logs
 /vendor
