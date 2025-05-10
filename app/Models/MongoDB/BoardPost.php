@@ -2,9 +2,9 @@
 
 namespace App\Models\MongoDB;
 
-use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
+use Jenssegers\Mongodb\Eloquent\Model as MongoModel;
 
-class BoardPost extends Eloquent
+class BoardPost extends MongoModel
 {
     protected $connection = 'mongodb';
 }
