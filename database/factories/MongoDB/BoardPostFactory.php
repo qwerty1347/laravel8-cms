@@ -16,7 +16,7 @@ class BoardPostFactory extends Factory
     public function definition()
     {
         return [
-            'type' => $this->faker->randomElement(['notice', 'free', 'qna']),
+            'config_id' => null,
             'user_id' => 1,
             'title' => $this->faker->sentence,
             'contents' => '<p>' . implode('</p><p>', $this->faker->paragraphs(3)) . '</p>',

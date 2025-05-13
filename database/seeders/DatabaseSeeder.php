@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use Database\Seeders\MongoDB\BoardConfigSeeder;
+use Database\Seeders\MongoDB\BoardPostSeeder;
+use Database\Seeders\MongoDB\BoardCommentSeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder

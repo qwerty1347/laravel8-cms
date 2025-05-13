@@ -2,6 +2,7 @@
 
 namespace Database\Seeders\MongoDB;
 
+use App\Models\MongoDB\BoardConfig;
 use Illuminate\Database\Seeder;
 use App\Models\MongoDB\BoardPost;
 
@@ -14,6 +15,15 @@ class BoardPostSeeder extends Seeder
      */
     public function run()
     {
-        BoardPost::factory()->count(10)->create();
+        $configs = BoardConfig::all();
+
+        foreach ($configs as $config) {
+            BoardPost::factory()
+                ->count(50)
+                ->state([
+                    'config_id' => $config->_id
+                ])
+                ->create();
+        }
     }
 }

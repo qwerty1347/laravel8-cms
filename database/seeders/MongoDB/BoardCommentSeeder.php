@@ -26,7 +26,7 @@ class BoardCommentSeeder extends Seeder
             BoardComment::factory()
                 ->count(rand(1, 5))
                 ->state([
-                    'type' => $post->type,
+                    'config_id' => $post->_id,
                     'post_id' => $post->_id,
                 ])
                 ->create();
