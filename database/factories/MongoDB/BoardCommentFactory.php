@@ -16,7 +16,7 @@ class BoardCommentFactory extends Factory
     public function definition()
     {
         return [
-            'type' => null,
+            'config_id' => null,
             'post_id' => null,
             'user_id' => 1,
             'comment' => $this->faker->sentence,

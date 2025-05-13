@@ -31,6 +31,7 @@ class BoardConfigSeeder extends Seeder
                 'user_id' => 1,
                 'name' => '공지사항',
                 'access_control' => [
+                    'admin' => true,
                     'member' => true,
                     'guest' => true
                 ],
@@ -43,6 +44,7 @@ class BoardConfigSeeder extends Seeder
                 'user_id' => 1,
                 'name' => '자유게시판',
                 'access_control' => [
+                    'admin' => true,
                     'member' => true,
                     'guest' => true
                 ],
@@ -55,6 +57,7 @@ class BoardConfigSeeder extends Seeder
                 'user_id' => 1,
                 'name' => 'Q&A',
                 'access_control' => [
+                    'admin' => true,
                     'member' => true,
                     'guest' => true
                 ],
