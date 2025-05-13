@@ -26,3 +26,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::name('social.')->group(base_path('routes/social.php'));
+
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::prefix('board')->name('board.')->group(base_path('/routes/cms/board.php'));
+});

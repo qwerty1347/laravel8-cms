@@ -1,6 +1,14 @@
 @extends('layouts.admin.main')
 
 @section('contents')
+<div class="container-fluid px-4 py-2">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb my-0 py-0">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active"><span>Dashboard</span></li>
+        </ol>
+    </nav>
+</div>
 <div class="body flex-grow-1">
     <div class="container-lg px-4">
       <div class="row g-4 mb-4">
@@ -753,4 +761,10 @@
         toastr.success("{!! session('login_success') !!}");
     @endif
 </script>
+
+<!-- Plugins and scripts required by this view-->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ asset('js/coreui-chartjs.js') }}"></script>
+<script src="{{ asset('js/coreui-utils.js') }}"></script>
+<script src="{{ asset('js/main.js') }}"></script>
 @endsection

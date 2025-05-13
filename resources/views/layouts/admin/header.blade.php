@@ -1,4 +1,4 @@
-<header class="header header-sticky p-0 mb-4">
+<header class="header header-sticky p-0">
     <div class="container-fluid border-bottom px-4">
         <button class="header-toggler" type="button" onclick="coreui.Sidebar.getInstance(document.querySelector('#sidebar')).toggle()" style="margin-inline-start: -14px;">
         <svg class="icon icon-lg">
@@ -6,9 +6,6 @@
         </svg>
         </button>
         <ul class="header-nav d-none d-lg-flex">
-        <li class="nav-item"><a class="nav-link" href="#">Dashboard</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Users</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Settings</a></li>
         </ul>
         <ul class="header-nav ms-auto">
         <li class="nav-item"><a class="nav-link" href="#">
@@ -107,15 +104,5 @@
             </div>
         </li>
         </ul>
-    </div>
-    <div class="container-fluid px-4">
-        <nav aria-label="breadcrumb">
-        <ol class="breadcrumb my-0">
-            <li class="breadcrumb-item"><a href="#">Home</a>
-            </li>
-            <li class="breadcrumb-item active"><span>Dashboard</span>
-            </li>
-        </ol>
-        </nav>
     </div>
 </header>
