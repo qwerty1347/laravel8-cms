@@ -21,9 +21,9 @@ class BoardConfigController extends Controller
      *
      * @return View
      */
-    public function index(): View
+    public function index(Request $request): View
     {
-        return $this->boardConfigService->index();
+        return $this->boardConfigService->index($request->all());
     }
 
     /**

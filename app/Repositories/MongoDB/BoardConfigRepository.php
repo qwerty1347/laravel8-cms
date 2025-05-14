@@ -15,28 +15,26 @@ class BoardConfigRepository
     }
 
     /**
-     * [getList description]
+     * board_configs 컬렉션 조회
      *
-     * @param   array  $where    [$where description]
+     * @param   array  $where    검색조건
      * @param   array  $orderBy  [['created_at', 'desc'], [], ....]
      *
      * @return  LengthAwarePaginator
      */
     public function getList(array $where, array $orderBy, int $perPage=10): LengthAwarePaginator
     {
-        $obj = $this->boardConfig::query();
+        $builder = $this->boardConfig::query()
+            ->when(!empty($where), function ($builder) use ($where) {
+                $builder->where($where);
+            })
+            ->when(!empty($orderBy), function ($builder) use ($orderBy) {
+                foreach ($orderBy as [$column, $direction]) {
+                    $builder->orderBy($column, $direction);
+                }
+            });
 
-        $obj->when(!empty($where), function ($builder) use ($where) {
-            $builder->where($where);
-        });
-
-        $obj->when(!empty($orderBy), function ($builder) use ($orderBy) {
-            foreach ($orderBy as [$column, $direction]) {
-                $builder->orderBy($column, $direction);
-            }
-        });
-
-        return $obj->paginate($perPage);
+        return $builder->paginate($perPage);
     }
 
     public function insert(array $data)

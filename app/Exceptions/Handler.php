@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Constants\HttpCodeConstant;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -37,5 +38,18 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request, Throwable $e)
+    {
+        $logMessage = "#00 ".$e->getMessage()." | FILE: ".$e->getFile()." | LINE: ".$e->getLine();
+        logMessage('admin', 'error', $logMessage);
+
+        if ($request->route() && $request->route()->uri() && strpos($request->route()->uri(), 'api') !== false) {
+            return response()->json(handleFailureResult(HttpCodeConstant::UNKNOWN_ERROR, $e->getMessage()), HttpCodeConstant::UNKNOWN_ERROR, [], JSON_UNESCAPED_UNICODE);
+        }
+        else {
+            return parent::render($request, $e);
+        }
     }
 }

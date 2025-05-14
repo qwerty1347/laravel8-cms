@@ -11,7 +11,7 @@ class DailyLog
 {
     public function __invoke(array $config)
     {
-        $path = isset($config['dir']) && !empty($config['dir']) ? config('services.log.path')."{$config['dir']}/" : config('services.log.path');
+        $path = isset($config['channel']) && !empty($config['channel']) ? config('services.log.path')."{$config['channel']}/" : config('services.log.path');
         $logPath = ensureDirectoryPath($path);
         $date = Carbon::now()->format('Y-m-d');
         $log = $logPath . "{$date}.log";
