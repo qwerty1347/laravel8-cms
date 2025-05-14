@@ -4,6 +4,7 @@ namespace App\Services\ContentsManagement;
 
 use Exception;
 use Carbon\Carbon;
+use App\Constants\HttpCodeConstant;
 use App\Repositories\MongoDB\BoardConfigRepository;
 use MongoDB\BSON\UTCDateTime;
 use Illuminate\View\View;
@@ -33,7 +34,7 @@ class BoardConfigService
     {
         try {
             DB::beginTransaction();
-            
+
             $accessControl = config('board.access_control_config');
 
             if (!empty($request['access_control'])) {
@@ -50,7 +51,7 @@ class BoardConfigService
                 'updated_at' => null,
                 'deleted_at' => null
             ]);
-            
+
             DB::commit();
 
             return response()->json(handleSuccessResult());
@@ -58,9 +59,9 @@ class BoardConfigService
         catch (Exception $e) {
             DB::rollback();
             $logMessage = $e->getMessage()." | FILE: ".$e->getFile()." | LINE: ".$e->getLine();
-            logMessage('adminlog', 'error', $logMessage);
+            logMessage('admin', 'error', $logMessage);
 
-            return response()->json(handleFailureResult(HttpCodeConstant::UNKNOWN_ERROR, $e->getMessage()), HttpCodeConstant::UNKNOWN_ERROR, [], JSON_UNESCAPED_UNICODE);
+            return response()->json(handleFailureResult(HttpCodeConstant::INTERVAL_SERVER_ERROR, $e->getMessage()), HttpCodeConstant::INTERVAL_SERVER_ERROR, [], JSON_UNESCAPED_UNICODE);
         }
     }
 }
