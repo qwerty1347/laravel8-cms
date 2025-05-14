@@ -1,5 +1,7 @@
 @extends('layouts.admin.main')
 
+@section('title', config('app.name').' - 게시판 관리')
+
 @section('contents')
 <div class="container-fluid border-bottom px-4 py-2 bg-white mb-2">
     <div class="d-flex justify-content-between align-items-center">
@@ -24,13 +26,11 @@
         <div class="d-flex align-items-center">
             <select class="form-select" style="width: 100px;">
                 <option value="">이름</option>
-
             </select>
-
-            <input type="text" class="form-control ms-2" style="width: 500px;" placeholder="검색어 입력">
+            <input type="text" class="form-control ms-2" style="width: 340px;" placeholder="검색어 입력">
         </div>
 
-        <div>
+        <div class="d-flex gap-2">
             <a href="#" id="search" class="btn btn-info">검색</a>
         </div>
     </div>
@@ -126,13 +126,19 @@
             type: 'post',
             url: '{{ route('admin.board.config.store') }}',
             data: $('#create-form').serialize(),
-            success: function (data) {
-                if (data.result) {
-                    alert('게시판 생성');
+            success: function (response) {
+                if (response.result) {
+                    toastr.success('게시판 생성 완료');
+                    location.reload();
                 }
             },
             error: function (xhr, error, status) {
-                alert('관리자에게 문의해 주세요('+status+'): ' + xhr.responseText);
+                Swal.fire({
+                    title: '오류',
+                    text: '요청 처리에 실패했습니다.\n' + (xhr.responseJSON?.message ?? '관리자에게 문의해 주세요.'),
+                    icon: 'error',
+                    confirmButtonText: '확인'
+                });
             },
         });
     });
