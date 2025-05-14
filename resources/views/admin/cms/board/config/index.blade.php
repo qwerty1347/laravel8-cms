@@ -15,7 +15,7 @@
 
         <div class="d-flex gap-2">
             <a href="#" id="create" class="btn btn-success">생성</a>
-            <a href="#" id="modify" class="btn btn-warning">수정</a>
+            <a href="#" id="edit" class="btn btn-warning">수정</a>
             <a href="#" id="delete" class="btn btn-danger">삭제</a>
         </div>
     </div>
@@ -24,14 +24,16 @@
 <div class="container-fluid px-4 py-2 bg-white mb-2">
     <div class="d-flex justify-content-between align-items-center">
         <div class="d-flex align-items-center">
-            <select class="form-select" style="width: 100px;">
-                <option value="">이름</option>
+            <select class="form-select" style="width: 100px;" name="st">
+                <option value="name">이름</option>
             </select>
-            <input type="text" class="form-control ms-2" style="width: 340px;" placeholder="검색어 입력">
+            <input type="text" class="form-control ms-2" style="width: 340px;" name="si" placeholder="검색어 입력" value="{{ request()->get('si') ?? '' }}">
         </div>
 
         <div class="d-flex gap-2">
             <a href="#" id="search" class="btn btn-info">검색</a>
+            <a href="#" id="search" class="btn btn-dark" onclick="event.preventDefault();
+             location.href='{{ route('admin.board.config.index') }}'">초기화</a>
         </div>
     </div>
 </div>
@@ -108,6 +110,36 @@
             </div>
         </div>
     </div>
+
+    <!-- 수정 Modal -->
+    <div class="modal" id="edit-modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">게시판 수정</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-form">
+                        <label for="edit-member-id">게시판 이름</label>
+                        <input type="text" class="form-control mb-4" id="edit-member-id" name="name" value="">
+
+                        <label class="form-label d-block">게시판 권한</label>
+                        @foreach (config('board.access_control') as $key => $item)
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="accessControl[]" value="{{ $key }}" id="{{ $key }}">
+                            <label class="form-check-label" for="{{ $key }}">{{ $item }}</label>
+                        </div>
+                        @endforeach
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                    <button type="button" class="btn btn-success" id="edit-btn">수정</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection
 
@@ -117,6 +149,11 @@
         $('#create').click(function (e) {
             e.preventDefault();
             showCreateModal();
+        });
+
+        $('#search').click(function (e) {
+            e.preventDefault();
+            search();
         });
     });
 
@@ -145,6 +182,13 @@
 
     function showCreateModal() {
         new bootstrap.Modal(document.getElementById('create-modal')).show();
+    }
+
+    function search() {
+        const searchType = $('select[name=st]').val();
+        const searchInput = $('input[name=si]').val();
+
+        location.href = '{{ route('admin.board.config.index') }}?st=' + searchType + '&si=' + encodeURIComponent(searchInput);
     }
 </script>
 @endsection

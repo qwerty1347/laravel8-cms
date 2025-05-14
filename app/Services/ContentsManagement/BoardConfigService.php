@@ -21,13 +21,25 @@ class BoardConfigService
         $this->boardConfigRepository = new BoardConfigRepository();
     }
 
-    public function index(): View
+    public function index(array $request)
     {
-        $list = $this->boardConfigRepository->getList([], [['_id', 'desc']]);
+        try {
+            $where = [];
 
-        return view('admin.cms.board.config.index', [
-            'list' => $list,
-        ]);
+            if (!empty($request['st']) && !empty($request['si'])) {
+                $where = ['name' => new \MongoDB\BSON\Regex('^' . preg_quote(trim($request['si']), '/'), 'i')];
+            }
+
+            return view('admin.cms.board.config.index', [
+                'list' => $this->boardConfigRepository->getList($where, [['_id', 'desc']]),
+            ]);
+        }
+        catch (Exception $e) {
+            $logMessage = $e->getMessage()." | FILE: ".$e->getFile()." | LINE: ".$e->getLine();
+            logMessage('admin', 'error', $logMessage);
+
+            return response()->json(handleFailureResult(HttpCodeConstant::INTERVAL_SERVER_ERROR, $e->getMessage()), HttpCodeConstant::INTERVAL_SERVER_ERROR, [], JSON_UNESCAPED_UNICODE);
+        }
     }
 
     public function store(array $request): JsonResponse
