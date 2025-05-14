@@ -95,8 +95,9 @@ class SocialLoginService
         }
         catch (Exception $e) {
             DB::rollBack();
-            $logMessage = "#00 ".$e->getMessage()." | FILE: ".$e->getFile()." | LINE: ".$e->getLine();
-            logMessage('adminlog', 'error', $logMessage);
+            $logMessage = $e->getMessage()." | FILE: ".$e->getFile()." | LINE: ".$e->getLine();
+            logMessage('admin', 'error', $logMessage);
+
             return response()->json(handleFailureResult(HttpCodeConstant::INTERVAL_SERVER_ERROR, $e->getMessage()), HttpCodeConstant::INTERVAL_SERVER_ERROR, [], JSON_UNESCAPED_UNICODE);
         }
     }

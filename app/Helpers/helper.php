@@ -1,7 +1,6 @@
 <?php
 
 use App\Constants\HttpCodeConstant;
-use App\Logging\DailyLog;
 
 if (!function_exists("logMessage")) {
     /**
@@ -16,7 +15,7 @@ if (!function_exists("logMessage")) {
      */
     function logMessage(string $channel, string $level, string $message, array $logData=[])
     {
-        $logger = (new \App\Logging\DailyLog())(['name' => $channel]);
+        $logger = (new \App\Logging\DailyLog())(['channel' => $channel]);
         $logger->$level($message, $logData);
     }
 }

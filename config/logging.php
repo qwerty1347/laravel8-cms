@@ -115,7 +115,7 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
 
-        'adminlog' => [
+        'admin' => [
             'driver' => 'custom',
             'via' => DailyLog::class,
             'level' => 'debug',

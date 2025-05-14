@@ -59,8 +59,8 @@ class GoogleService extends SocialLoginService
 
         } catch (Exception $e) {
             DB::rollBack();
-            $logMessage = "#1 ".$e->getMessage()." | FILE: ".$e->getFile()." | LINE: ".$e->getLine();
-            logMessage('adminlog', 'error', $logMessage);
+            $logMessage = $e->getMessage()." | FILE: ".$e->getFile()." | LINE: ".$e->getLine();
+            logMessage('admin', 'error', $logMessage);
 
             dd($e, $e->getMessage(), $e->getFile(), $e->getLine());
 
