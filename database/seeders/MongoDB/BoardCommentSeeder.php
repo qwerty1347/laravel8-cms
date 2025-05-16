@@ -5,6 +5,7 @@ namespace Database\Seeders\MongoDB;
 use App\Models\MongoDB\BoardComment;
 use App\Models\MongoDB\BoardPost;
 use Illuminate\Database\Seeder;
+use MongoDB\BSON\ObjectId;
 
 class BoardCommentSeeder extends Seeder
 {
@@ -26,8 +27,8 @@ class BoardCommentSeeder extends Seeder
             BoardComment::factory()
                 ->count(rand(1, 5))
                 ->state([
-                    'config_id' => $post->_id,
-                    'post_id' => $post->_id,
+                    'config_id' => new ObjectId($post->_id),
+                    'post_id' => new ObjectId($post->_id),
                 ])
                 ->create();
         }

@@ -3,8 +3,9 @@
 namespace Database\Seeders\MongoDB;
 
 use App\Models\MongoDB\BoardConfig;
-use Illuminate\Database\Seeder;
 use App\Models\MongoDB\BoardPost;
+use MongoDB\BSON\ObjectId;
+use Illuminate\Database\Seeder;
 
 class BoardPostSeeder extends Seeder
 {
@@ -21,7 +22,7 @@ class BoardPostSeeder extends Seeder
             BoardPost::factory()
                 ->count(50)
                 ->state([
-                    'config_id' => $config->_id
+                    'config_id' => new ObjectId($config->_id)
                 ])
                 ->create();
         }
