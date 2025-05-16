@@ -1,6 +1,6 @@
 @extends('layouts.admin.main')
 
-@section('title', config('app.name').' - 게시판 관리')
+@section('title', config('app.name').' - 게시판 설정')
 
 @section('contents')
 <div class="container-fluid border-bottom px-4 py-2 bg-white mb-2">
