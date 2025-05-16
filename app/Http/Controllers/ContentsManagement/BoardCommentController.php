@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\ContentsManagement;
 
 use App\Services\ContentsManagement\BoardCommentService;
 use Illuminate\Http\Request;

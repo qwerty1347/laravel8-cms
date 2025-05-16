@@ -4,9 +4,12 @@ namespace App\Repositories\MongoDB;
 
 use App\Models\MongoDB\BoardConfig;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 class BoardConfigRepository
 {
+    public const PER_PAGE = 10;
     protected BoardConfig $boardConfig;
 
     public function __construct()
@@ -15,16 +18,16 @@ class BoardConfigRepository
     }
 
     /**
-     * board_configs 컬렉션 조회
+     * board_configs 다큐먼트 조회
      *
-     * @param   array  $where    검색조건
-     * @param   array  $orderBy  [['created_at', 'desc'], [], ....]
+     * @param   array    $where    검색 조건
+     * @param   array    $orderBy  [['created_at', 'desc'], [], ....]
      *
-     * @return  LengthAwarePaginator
+     * @return  Builder
      */
-    public function getList(array $where, array $orderBy, int $perPage=10): LengthAwarePaginator
+    public function getList(array $where, array $orderBy): Builder
     {
-        $builder = $this->boardConfig::query()
+        return $this->boardConfig::query()
             ->when(!empty($where), function ($builder) use ($where) {
                 $builder->where($where);
             })
@@ -33,8 +36,16 @@ class BoardConfigRepository
                     $builder->orderBy($column, $direction);
                 }
             });
+    }
 
-        return $builder->paginate($perPage);
+    public function getConfigList(array $where=[], array $orderBy=[]): Collection
+    {
+        return $this->getList($where, $orderBy)->get();
+    }
+
+    public function getPageList(array $where=[], array $orderBy=[]): LengthAwarePaginator
+    {
+        return $this->getList($where, $orderBy)->paginate(self::PER_PAGE);
     }
 
     public function insert(array $data)

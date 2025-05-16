@@ -19,6 +19,7 @@ class BoardConfigController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return View
      */
     public function index(Request $request): View
