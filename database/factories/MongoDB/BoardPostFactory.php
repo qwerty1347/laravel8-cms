@@ -16,7 +16,7 @@ class BoardPostFactory extends Factory
     public function definition()
     {
         return [
-            'config_id' => null,
+            'config_name' => null,
             'user_id' => 1,
             'title' => $this->faker->sentence,
             'contents' => '<p>' . implode('</p><p>', $this->faker->paragraphs(3)) . '</p>',

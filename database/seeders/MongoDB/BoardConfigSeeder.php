@@ -27,7 +27,6 @@ class BoardConfigSeeder extends Seeder
     {
         $data = [
             [
-                'type' => 'notice',
                 'user_id' => 1,
                 'name' => '공지사항',
                 'access_control' => [
@@ -40,7 +39,6 @@ class BoardConfigSeeder extends Seeder
                 'deleted_at' => null
             ],
             [
-                'type' => 'free',
                 'user_id' => 1,
                 'name' => '자유게시판',
                 'access_control' => [
@@ -53,7 +51,6 @@ class BoardConfigSeeder extends Seeder
                 'deleted_at' => null
             ],
             [
-                'type' => 'qna',
                 'user_id' => 1,
                 'name' => 'Q&A',
                 'access_control' => [

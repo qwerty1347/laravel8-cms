@@ -1,6 +1,6 @@
 @extends('layouts.admin.main')
 
-@section('title', config('app.name').' - 게시판 관리')
+@section('title', config('app.name').' - 게시판 목록')
 
 @section('contents')
 <div class="container-fluid border-bottom px-4 py-2 bg-white mb-2">
@@ -9,7 +9,7 @@
             <ol class="breadcrumb my-0 py-0 mb-0">
                 <li class="breadcrumb-item"><a href="#">Home</a></li>
                 <li class="breadcrumb-item active"><span>게시판 관리</span></li>
-                <li class="breadcrumb-item active" aria-current="page"><span>게시판 설정</span></li>
+                <li class="breadcrumb-item active" aria-current="page"><span>게시판 목록</span></li>
             </ol>
         </nav>
 
@@ -23,6 +23,16 @@
 
 <div class="container-fluid px-4 py-2 bg-white mb-2">
     <form role="search" id="search-form" method="get">
+        <input type="hidden" name="page" value="{{ request()->get('page') ?? 1 }}">
+        <input type="hidden" name="config" value="{{ request()->get('config') ?? 'all' }}">
+
+        <div class="d-flex gap-2 mb-3">
+            <a href="#" class="btn config-btn {{ !request()->get('config') || request()->get('config') == 'all' ? 'btn-secondary' : 'btn-light' }}" onclick="event.preventDefault(); location.href='{{ route('admin.board.post.index', ['page' => request()->get('page') ?? 1, 'config' => 'all', 'st' => request()->get('st') ?? '', 'si' => request()->get('si') ?? '']) }}'" >전체</a>
+            @foreach ($configList as $item)
+            <a href="#" class="btn config-btn {{ request()->get('config') == $item->name ? 'btn-secondary' : 'btn-light' }}" onclick="event.preventDefault(); location.href='{{ route('admin.board.post.index', ['page' => request()->get('page') ?? 1, 'config' => $item->name, 'st' => request()->get('st') ?? '', 'si' => request()->get('si') ?? '']) }}'">{{ $item->name }}</a>
+            @endforeach
+        </div>
+
         <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center">
                 <select class="form-select" style="width: 100px;" name="st">
@@ -34,7 +44,7 @@
             <div class="d-flex gap-2">
                 <a href="#" id="search" class="btn btn-info">검색</a>
                 <a href="#" id="clear" class="btn btn-dark" onclick="event.preventDefault();
-                location.href='{{ route('admin.board.config.index') }}'">초기화</a>
+                location.href='{{ route('admin.board.post.index') }}'">초기화</a>
             </div>
         </div>
     </form>
@@ -50,7 +60,8 @@
                             <input type="checkbox" name="" id="">
                         </th>
                         <th scope="col" class="text-center">게시판 이름</th>
-                        <th scope="col" class="text-center">게시판 권한</th>
+                        <th scope="col" class="text-center">제목</th>
+                        <th scope="col" class="text-center">내용</th>
                         <th scope="col" class="text-center">생성일</th>
                         <th scope="col" class="text-center">수정일</th>
                         <th scope="col" class="text-center">삭제일</th>
@@ -62,10 +73,9 @@
                         <td class="text-center">
                             <input type="checkbox" name[]="id" id="{{ $row->_id }}">
                         </td>
-                        <td class="text-center">{{ $row->name }}</td>
-                        <td class="text-center">
-                            {{ collect((array) $row->access_control)->filter()->keys()->map(fn($key) => config('board.access_control')[$key] ?? $key)->implode(', ') }}
-                        </td>
+                        <td class="text-center">{{ $row->config_name }}</td>
+                        <td class="text-center">{{ Str::Limit($row->title, 15, '...') }}</td>
+                        <td class="text-center">{{ Str::limit($row->plain_contents, 50, '...') }}</td>
                         <td class="text-center">{{ $row->created_at }}</td>
                         <td class="text-center">{{ $row->updated_at }}</td>
                         <td class="text-center">{{ $row->deleted_at }}</td>
@@ -149,10 +159,10 @@
 @section('additional-scripts')
 <script>
     $(document).ready(function () {
-        $('#create').click(function (e) {
+        /* $('#create').click(function (e) {
             e.preventDefault();
             showModal('create-modal');
-        });
+        }); */
 
         $('#search').click(function (e) {
             e.preventDefault();
@@ -161,7 +171,7 @@
     });
 
     $(document).on('click', '#create-btn', function () {
-        $.ajax({
+        /* $.ajax({
             headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
             type: 'post',
             url: '{{ route('admin.board.config.store') }}',
@@ -180,7 +190,7 @@
                     confirmButtonText: '확인'
                 });
             },
-        });
+        }); */
     });
 
     function showModal(id) {

@@ -22,7 +22,7 @@ class BoardPostSeeder extends Seeder
             BoardPost::factory()
                 ->count(50)
                 ->state([
-                    'config_id' => new ObjectId($config->_id)
+                    'config_name' => $config->name
                 ])
                 ->create();
         }

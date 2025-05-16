@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\ContentsManagement;
 
 use App\Services\ContentsManagement\BoardPostService;
 use Illuminate\Http\Request;
@@ -18,11 +18,12 @@ class BoardPostController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        return $this->boardPostService->index($request->all());
     }
 
     /**

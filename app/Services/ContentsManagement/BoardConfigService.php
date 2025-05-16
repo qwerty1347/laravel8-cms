@@ -7,7 +7,6 @@ use Carbon\Carbon;
 use App\Constants\HttpCodeConstant;
 use App\Repositories\MongoDB\BoardConfigRepository;
 use MongoDB\BSON\UTCDateTime;
-use Illuminate\View\View;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\JsonResponse;
 
@@ -24,21 +23,18 @@ class BoardConfigService
     public function index(array $request)
     {
         try {
-            $where = [];
-
             if (!empty($request['st']) && !empty($request['si'])) {
-                $where = ['name' => new \MongoDB\BSON\Regex('^' . preg_quote(trim($request['si']), '/'), 'i')];
+                $where = [$request['st'] => new \MongoDB\BSON\Regex('^' . preg_quote(trim($request['si']), '/'), 'i')];
             }
 
             return view('admin.cms.board.config.index', [
-                'list' => $this->boardConfigRepository->getList($where, [['_id', 'desc']]),
+                'list' => $this->boardConfigRepository->getPageList($where ?? [], [['_id', 'desc']]),
             ]);
         }
         catch (Exception $e) {
             $logMessage = $e->getMessage()." | FILE: ".$e->getFile()." | LINE: ".$e->getLine();
             logMessage('admin', 'error', $logMessage);
-
-            return response()->json(handleFailureResult(HttpCodeConstant::INTERVAL_SERVER_ERROR, $e->getMessage()), HttpCodeConstant::INTERVAL_SERVER_ERROR, [], JSON_UNESCAPED_UNICODE);
+            abort('500');
         }
     }
 
