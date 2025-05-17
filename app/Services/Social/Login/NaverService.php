@@ -42,20 +42,16 @@ class NaverService extends SocialLoginService
             $user = $this->userRepository->getUserWithSocialAccountRow($socialUser->getEmail() ?? $socialUser->getId(), $socialUser->getId());
 
             if (isset($user) && $user->socialAccounts->isEmpty()) {
-                return parent::handleLinkUserAccount($socialUser, $user);
-            }
-
-            if (!isset($user)) {
-                $user = parent::handleNotUser($socialUser);
+                $response = parent::handleLinkUserAccount($socialUser, $user);
             }
             else {
-                parent::handleSocialAccountsUser($user);
+                $response = parent::handleSocialUserAccounts($socialUser, $user);
             }
 
             Auth::login($user, true);
             DB::commit();
 
-            return redirect()->to('/admin');
+            return $response;
         }
         catch (Exception $e) {
             DB::rollBack();

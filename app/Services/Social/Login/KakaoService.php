@@ -43,22 +43,18 @@ class KakaoService extends SocialLoginService
             $user = $this->userRepository->getUserWithSocialAccountRow($socialUser->getEmail() ?? $socialUser->getId(), $socialUser->getId());
 
             if (isset($user) && $user->socialAccounts->isEmpty()) {
-                return parent::handleLinkUserAccount($socialUser, $user);
-            }
-
-            if (!isset($user)) {
-                $user = parent::handleNotUser($socialUser);
+                $response = parent::handleLinkUserAccount($socialUser, $user);
             }
             else {
-                parent::handleSocialAccountsUser($user);
+                $response = parent::handleSocialUserAccounts($socialUser, $user);
             }
 
             Auth::login($user, true);
             DB::commit();
 
-            return redirect()->to('/admin')->with('login_success', __('auth.last_login_at').': '.$user->last_login_at);
-
-        } catch (Exception $e) {
+            return $response;
+        }
+        catch (Exception $e) {
             DB::rollBack();
             $logMessage = $e->getMessage()." | FILE: ".$e->getFile()." | LINE: ".$e->getLine();
             logMessage('admin', 'error', $logMessage);
