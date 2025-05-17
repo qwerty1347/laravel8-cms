@@ -42,22 +42,18 @@ class GoogleService extends SocialLoginService
             $user = $this->userRepository->getUserWithSocialAccountRow($socialUser->getEmail(), $socialUser->getId());
 
             if (isset($user) && $user->socialAccounts->isEmpty()) {
-                return parent::handleLinkUserAccount($socialUser, $user);
-            }
-
-            if (!isset($user)) {
-                $user = $this->handleNotUser($socialUser);
+                $response = parent::handleLinkUserAccount($socialUser, $user);
             }
             else {
-                $this->handleSocialAccountsUser($user);
+                $response = parent::handleSocialUserAccounts($socialUser, $user);
             }
 
             Auth::login($user, true);
             DB::commit();
 
-            return redirect()->to('/admin');
-
-        } catch (Exception $e) {
+            return $response;
+        }
+        catch (Exception $e) {
             DB::rollBack();
             $logMessage = $e->getMessage()." | FILE: ".$e->getFile()." | LINE: ".$e->getLine();
             logMessage('admin', 'error', $logMessage);

@@ -10,6 +10,7 @@ use App\Repositories\UserRepository;
 use App\Repositories\SocialAccountRepository;
 use App\Repositories\Auth\OauthTokenRepository;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -147,6 +148,26 @@ class SocialLoginService
     }
 
     /**
+     * [handleUserAccount description]
+     *
+     * @param   TwoUser           $socialUser  [$socialUser description]
+     * @param   User              $user        [$user description]
+     *
+     * @return  RedirectResponse               [return description]
+     */
+    public function handleUserAccount(TwoUser $socialUser, User $user): RedirectResponse
+    {
+        if (!isset($user)) {
+            $user = $this->handleNotUser($socialUser);
+        }
+        else {
+            $this->handleSocialUserAccounts($user);
+        }
+
+        return redirect()->to('/admin')->with('login_success', __('auth.last_login_at').': '.$user->last_login_at);
+    }
+
+    /**
      * 소셜 회원가입으로 로그인 하는 경우를 처리하는 메소드
      * - access_token 만료기간 검사 후 refresh_token 을 이용해 access_token 재발급
      *
@@ -154,7 +175,7 @@ class SocialLoginService
      *
      * @return  mixed
      */
-    public function handleSocialAccountsUser(User $user)
+    public function handleSocialUserAccounts(User $user)
     {
         $this->userRepository->update(
             ['id' => $user->id],
