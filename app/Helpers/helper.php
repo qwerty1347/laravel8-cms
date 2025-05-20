@@ -6,10 +6,10 @@ if (!function_exists("logMessage")) {
     /**
      * 로그 메세지를 저장하는 함수
      *
-     * @param   string  $channel  로그 메세지
-     * @param   array   $level    로그 데이터
-     * @param   string  $message  로그 레벨
-     * @param   string  $logData  로그 저장 경로
+     * @param   string  $channel  로그 채널
+     * @param   array   $level    로그 레벨
+     * @param   string  $message  로그 메세지
+     * @param   string  $logData  로그 데이터
      *
      * @return  void
      */
@@ -20,15 +20,15 @@ if (!function_exists("logMessage")) {
     }
 }
 
-if (!function_exists("ensureDirectoryPath")) {
+if (!function_exists("ensureDir")) {
     /**
-     * 지정된 디렉토리가 존재하지 않으면 디렉토리를 생성하는 함수
+     * 지정된 경로의 디렉토리가 존재하지 않으면 지정된 경로에 디렉토리를 생성하는 함수
      *
-     * @param   string   $message
+     * @param   string   $path
      *
      * @return  string
      */
-    function ensureDirectoryPath(string $path): string
+    function ensureDir(string $path): string
     {
         if (!is_dir($path)) {
             mkdir($path, 0755, true);
