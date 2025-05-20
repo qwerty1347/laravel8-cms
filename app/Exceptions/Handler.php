@@ -46,7 +46,7 @@ class Handler extends ExceptionHandler
         logMessage('admin', 'error', $logMessage);
 
         if ($request->route() && $request->route()->uri() && strpos($request->route()->uri(), 'api') !== false) {
-            return response()->json(handleFailureResult(HttpCodeConstant::UNKNOWN_ERROR, $e->getMessage()), HttpCodeConstant::UNKNOWN_ERROR, [], JSON_UNESCAPED_UNICODE);
+            return response()->json(handleErrorResponse(HttpCodeConstant::UNKNOWN_ERROR, $e->getMessage()), HttpCodeConstant::UNKNOWN_ERROR, [], JSON_UNESCAPED_UNICODE);
         }
         else {
             return parent::render($request, $e);
