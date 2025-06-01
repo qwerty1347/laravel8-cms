@@ -148,12 +148,12 @@ class SocialLoginService
     }
 
     /**
-     * [handleUserAccount description]
+     * 소셜 로그인을 처리하는 메소드
      *
-     * @param   TwoUser           $socialUser  [$socialUser description]
-     * @param   User              $user        [$user description]
+     * @param   TwoUser           $socialUser  소셜에서 제공하는 회원정보
+     * @param   User              $user        users 테이블 row
      *
-     * @return  RedirectResponse               [return description]
+     * @return  RedirectResponse
      */
     public function handleUserAccount(TwoUser $socialUser, User $user): RedirectResponse
     {
