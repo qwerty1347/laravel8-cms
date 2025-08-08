@@ -1,14 +1,14 @@
 services:
   mysql:
     image: mysql:5.7
-    container_name: laravel8-admin-mysql
+    container_name: laravel8_cms-mysql
     command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     volumes:
       - ./.docker/mysql/data:/var/lib/mysql
       - ./.docker/mysql/my.cnf:/etc/mysql/mysql.conf.d/custom.cnf
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: laravel8_admin
+      MYSQL_DATABASE: laravel8_cms-mysql
       MYSQL_USER: admin
       MYSQL_PASSWORD: admin
     ports:
@@ -18,7 +18,7 @@ services:
 
   mongo:
     image: mongo:latest
-    container_name: laravel8-admin-mongo
+    container_name: laravel8_cms-mongodb
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: admin
@@ -33,7 +33,7 @@ services:
     build:
       context: ./.docker/php
       dockerfile: Dockerfile
-    container_name: laravel8-admin
+    container_name: laravel8_cms
     volumes:
       - ./:/var/www/html
     networks:
@@ -41,7 +41,7 @@ services:
 
   nginx:
     image: nginx:alpine
-    container_name: nginx
+    container_name: laravel8_cms-nginx
     volumes:
       - ./:/var/www/html
       - ./.docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
