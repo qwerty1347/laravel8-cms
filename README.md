@@ -75,8 +75,8 @@ laravel8-cms/
 
 ## ✨ 기능 목록
 
-- <input type="checkbox"> 사용자 인증 (회원가입/로그인)
-- <input type="checkbox"> Social Login (Google, Naver, Kakao)
-- <input type="checkbox"> 컨텐츠 관리 시스템
-- <input type="checkbox"> 관리자 대시보드
-- <input type="checkbox" disabled> API 문서화
+- [x] 사용자 인증 (회원가입/로그인)
+- [x] Social Login (Google, Naver, Kakao)
+- [x] 컨텐츠 관리 시스템
+- [x] 관리자 대시보드
+- [ ] API 문서화
