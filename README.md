@@ -8,7 +8,7 @@
 이 프로젝트는 모듈화된 CMS 시스템을 구현합니다. 주요 특징으로는:
 - Laravel 8 기반의 안정적인 백엔드 구현
 - Docker를 통한 컨테이너화된 개발 환경
-- 모듈화된 Social Login 지원
+- 모듈화된 Social Login 지원과 통합 회원가입 지원 (Google, Naver, Kakao 연동 및 자체 회원가입 )
 - 자동화된 테스트 시스템 (Unit & Feature 테스트)
 - 관리자 전용 관리 시스템
 
