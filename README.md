@@ -44,7 +44,7 @@
 
 
 ## 🏗️ 프로젝트 구조
-
+```text
 laravel8-cms/
 ├── app/                         # Laravel 애플리케이션 코드
 │   ├── Http/                    # HTTP 관련 코드 (Controllers, Middleware)
@@ -70,12 +70,13 @@ laravel8-cms/
 │   ├── Feature/                 # 기능 테스트
 │   └── Unit/                    # 단위 테스트
 └── .docker/                     # Docker 구성
+```
 
 
 ## ✨ 기능 목록
 
-- [ ] 사용자 인증 (회원가입/로그인)
-- [ ] Social Login (Google, Naver)
-- [ ] 컨텐츠 관리 시스템
-- [ ] 관리자 대시보드
-- [ ] API 문서화
+- <input type="checkbox"> 사용자 인증 (회원가입/로그인)
+- <input type="checkbox"> Social Login (Google, Naver, Kakao)
+- <input type="checkbox"> 컨텐츠 관리 시스템
+- <input type="checkbox"> 관리자 대시보드
+- <input type="checkbox" disabled> API 문서화
