@@ -1,11 +1,11 @@
-# Laravel 8 CMS Project
+# Laravel 8 CMS
 
-이 프로젝트는 Laravel 8을 기반으로 구축된 모듈화된 CMS 시스템입니다. 자동화된 테스트 시스템과 관리자 전용 관리 시스템을 포함하여, 안정적이고 확장 가능한 컨텐츠 관리 솔루션을 제공합니다.
+Laravel 8 기반의 모듈형 CMS 시스템으로, Google/Naver/Kakao 소셜 로그인과 자체 회원가입을 모두 지원합니다. 관리자 대시보드와 확장 가능한 컨텐츠 관리 기능을 제공하며, 자동화된 테스트를 통해 안정성을 보장합니다
 
 
 ## 🚀 프로젝트 개요
 
-이 프로젝트는 모듈화된 CMS 시스템을 구현합니다. 주요 특징으로는:
+모듈화된 CMS 시스템을 구현합니다. 주요 특징으로는:
 - Laravel 8 기반의 안정적인 백엔드 구현
 - Docker를 통한 컨테이너화된 개발 환경
 - 모듈화된 Social Login 지원과 통합 회원가입 지원 (Google, Naver, Kakao 연동 및 자체 회원가입 )
@@ -15,17 +15,12 @@
 
 ## 🛠️ 기술 스택
 
-### 텍스트 설명
-- **Backend**: Laravel 8, PHP 7.4
-- **Frontend**: JavaScript, jQuery, Bootstrap, TailwindCSS, Vite
-- **Database**: MySQL, MongoDB
-- **Container**: Docker
-- **Package Manager**: Composer
-- **Testing**: PHPUnit
-- **Version Control**: Git
-
-### 기술 스택 시각화
 ![기술 스택](storage/screenshots/tech-stack.png)
+
+
+## 🏛️ 시스템 아키텍처
+
+![시스템 아키텍처](storage/screenshots/architecture.png)
 
 
 ## 📸 스크린샷
