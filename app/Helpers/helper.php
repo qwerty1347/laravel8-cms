@@ -39,7 +39,7 @@ if (!function_exists("ensureDir")) {
     }
 }
 
-if (!function_exists("handleSuccessResponse")) {
+if (!function_exists("successResponse")) {
     /**
      * 성공 결과 처리하는 함수
      *
@@ -48,7 +48,7 @@ if (!function_exists("handleSuccessResponse")) {
      *
      * @return  array
      */
-    function handleSuccessResponse(array $data=[], int $code=HttpCodeConstant::OK): array
+    function successResponse(array $data=[], int $code=HttpCodeConstant::OK): array
     {
         return [
             "result" => true,
@@ -58,7 +58,7 @@ if (!function_exists("handleSuccessResponse")) {
     }
 }
 
-if (!function_exists("handleErrorResponse")) {
+if (!function_exists("errorResponse")) {
     /**
      * 실패 결과 처리하는 함수
      *
@@ -67,7 +67,7 @@ if (!function_exists("handleErrorResponse")) {
      *
      * @return  array
      */
-    function handleErrorResponse(int $code, string $message): array
+    function errorResponse(int $code, string $message): array
     {
         return [
             "result"  => false,

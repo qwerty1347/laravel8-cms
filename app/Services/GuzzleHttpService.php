@@ -38,7 +38,7 @@ class GuzzleHttpService
 
         try {
             $response = $this->client->request('POST', $url, $options);
-            return handleSuccessResponse(json_decode($response->getBody()->getContents(), true) ?? []);
+            return successResponse(json_decode($response->getBody()->getContents(), true) ?? []);
 
         } catch (RequestException $e) {
             $statusCode = $e->getResponse() ? $e->getResponse()->getStatusCode() : HttpCodeConstant::INTERVAL_SERVER_ERROR;
@@ -68,7 +68,7 @@ class GuzzleHttpService
 
         try {
             $response = $this->client->request('GET', $url, $options);
-            return handleSuccessResponse(json_decode($response->getBody()->getContents(), true) ?? []);
+            return successResponse(json_decode($response->getBody()->getContents(), true) ?? []);
 
         } catch (RequestException $e) {
             $statusCode = $e->getResponse() ? $e->getResponse()->getStatusCode() : HttpCodeConstant::INTERVAL_SERVER_ERROR;

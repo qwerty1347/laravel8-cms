@@ -58,7 +58,7 @@ class LoginController extends Controller
     public function handleGoogleLinkUserAccount(): JsonResponse
     {
         if (empty(request()->post('userId')) || empty(request()->post('socialData'))) {
-            return response()->json(handleErrorResponse(HttpCodeConstant::BAD_REQUEST, '소셜계정 정보가 존재하지 않습니다.'), HttpCodeConstant::BAD_REQUEST, [], JSON_UNESCAPED_UNICODE);
+            return response()->json(errorResponse(HttpCodeConstant::BAD_REQUEST, '소셜계정 정보가 존재하지 않습니다.'), HttpCodeConstant::BAD_REQUEST, [], JSON_UNESCAPED_UNICODE);
         }
 
         return $this->socialLoginService->linkUserAccount(request()->post('userId'), request()->post('socialData'));
@@ -92,7 +92,7 @@ class LoginController extends Controller
     public function handleNaverLinkUserAccount(): JsonResponse
     {
         if (empty(request()->post('userId')) || empty(request()->post('socialData'))) {
-            return response()->json(handleErrorResponse(HttpCodeConstant::BAD_REQUEST, '소셜계정 정보가 존재하지 않습니다.'), HttpCodeConstant::BAD_REQUEST, [], JSON_UNESCAPED_UNICODE);
+            return response()->json(errorResponse(HttpCodeConstant::BAD_REQUEST, '소셜계정 정보가 존재하지 않습니다.'), HttpCodeConstant::BAD_REQUEST, [], JSON_UNESCAPED_UNICODE);
         }
 
         return $this->socialLoginService->linkUserAccount(request()->post('userId'), request()->post('socialData'));
@@ -126,7 +126,7 @@ class LoginController extends Controller
     public function handleKakaoLinkUserAccount(): JsonResponse
     {
         if (empty(request()->post('userId')) || empty(request()->post('socialData'))) {
-            return response()->json(handleErrorResponse(HttpCodeConstant::BAD_REQUEST, '소셜계정 정보가 존재하지 않습니다.'), HttpCodeConstant::BAD_REQUEST, [], JSON_UNESCAPED_UNICODE);
+            return response()->json(errorResponse(HttpCodeConstant::BAD_REQUEST, '소셜계정 정보가 존재하지 않습니다.'), HttpCodeConstant::BAD_REQUEST, [], JSON_UNESCAPED_UNICODE);
         }
 
         return $this->socialLoginService->linkUserAccount(request()->post('userId'), request()->post('socialData'));

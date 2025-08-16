@@ -92,14 +92,14 @@ class SocialLoginService
             Auth::login($user, true);
             DB::commit();
 
-            return response()->json(handleSuccessResponse(), HttpCodeConstant::OK, [], JSON_UNESCAPED_UNICODE);
+            return response()->json(successResponse(), HttpCodeConstant::OK, [], JSON_UNESCAPED_UNICODE);
         }
         catch (Exception $e) {
             DB::rollBack();
             $logMessage = $e->getMessage()." | FILE: ".$e->getFile()." | LINE: ".$e->getLine();
             logMessage('admin', 'error', $logMessage);
 
-            return response()->json(handleErrorResponse(HttpCodeConstant::INTERVAL_SERVER_ERROR, $e->getMessage()), HttpCodeConstant::INTERVAL_SERVER_ERROR, [], JSON_UNESCAPED_UNICODE);
+            return response()->json(errorResponse(HttpCodeConstant::INTERVAL_SERVER_ERROR, $e->getMessage()), HttpCodeConstant::INTERVAL_SERVER_ERROR, [], JSON_UNESCAPED_UNICODE);
         }
     }
 

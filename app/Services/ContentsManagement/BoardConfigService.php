@@ -62,14 +62,14 @@ class BoardConfigService
 
             DB::commit();
 
-            return response()->json(handleSuccessResponse());
+            return response()->json(successResponse());
         }
         catch (Exception $e) {
             DB::rollback();
             $logMessage = $e->getMessage()." | FILE: ".$e->getFile()." | LINE: ".$e->getLine();
             logMessage('admin', 'error', $logMessage);
 
-            return response()->json(handleErrorResponse(HttpCodeConstant::INTERVAL_SERVER_ERROR, $e->getMessage()), HttpCodeConstant::INTERVAL_SERVER_ERROR, [], JSON_UNESCAPED_UNICODE);
+            return response()->json(errorResponse(HttpCodeConstant::INTERVAL_SERVER_ERROR, $e->getMessage()), HttpCodeConstant::INTERVAL_SERVER_ERROR, [], JSON_UNESCAPED_UNICODE);
         }
     }
 }
